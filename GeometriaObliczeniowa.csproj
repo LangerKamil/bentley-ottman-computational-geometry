@@ -65,8 +65,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\CoordinateSystem\CoordinateSystemElements.cs" />
+    <Compile Include="Engine\Interface\IIntersectionEngine.cs" />
+    <Compile Include="Engine\IntersectionEngine.cs" />
     <Compile Include="View\MainWindowViewModel.cs" />
-    <Page Include="Controls\CoordinateSystemControl.xaml">
+    <Page Include="Controls\CoordinateSystem\CoordinateSystemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -78,7 +81,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controls\CoordinateSystemControl.xaml.cs">
+    <Compile Include="Controls\CoordinateSystem\CoordinateSystemControl.xaml.cs">
       <DependentUpon>CoordinateSystemControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">

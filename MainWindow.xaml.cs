@@ -17,6 +17,8 @@ namespace GeometriaObliczeniowa
 
         public static readonly DependencyProperty MainWindowViewModelProperty =
             DependencyProperty.Register(nameof(MainWindowViewModel), typeof(MainWindowViewModel), typeof(MainWindow), new PropertyMetadata(default));
+
+        private bool IsRunning { get; set; }
         #endregion
 
         #region Constructors
@@ -32,10 +34,10 @@ namespace GeometriaObliczeniowa
         private void ProceedCoordinateSystemRendering()
         {
             List<Segment> segments = this.MainWindowViewModel.Segments.ToList();
-            this.coordinateSystem.DrawCoordinateSystem(segments);
+            this.coordinateSystem.RenderCoordinateSystem(segments);
         }
 
-        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e) // TODO: Change it to react on Segment properties change only
         {
             if (MainWindowViewModel != null)
             {
@@ -43,6 +45,20 @@ namespace GeometriaObliczeniowa
             }
             base.OnPropertyChanged(e);
         }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (!this.IsRunning)
+            {
+                this.IsRunning = this.coordinateSystem.RunSweep(true);
+            }
+            else
+            {
+                this.IsRunning = this.coordinateSystem.RunSweep(false);
+            }
+        }
         #endregion
+
+
     }
 }

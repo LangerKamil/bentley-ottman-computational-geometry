@@ -24,9 +24,12 @@
 
         <coordinateSystemControl:CoordinateSystemControl Grid.Column="0" 
                                                          Grid.ColumnSpan="2" 
-                                                         Grid.Row="1" 
-                                                         Grid.RowSpan="2" 
-                                                         x:Name="coordinateSystem"/>
+                                                         Grid.Row="0" 
+                                                         Grid.RowSpan="4" 
+                                                         x:Name="coordinateSystem"
+                                                         Background="#fdf8f1"
+                                                         BorderThickness="1"
+                                                         BorderBrush="Black"/>
         <DataGrid Grid.Column="2" 
                   Grid.ColumnSpan="2" 
                   Grid.Row="0" 
@@ -42,9 +45,9 @@
                   CanUserSortColumns="False"
                   CanUserReorderColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Starting point: X1, Y1" Binding="{Binding Path=StartingPoint, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                <DataGridTextColumn Header="Starting point: X, Y" Binding="{Binding Path=StartingPoint, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Ending point: X2, Y2" Binding="{Binding Path=EndingPoint, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                <DataGridTextColumn Header="Ending point: X, Y" Binding="{Binding Path=EndingPoint, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                 </DataGridTextColumn>
             </DataGrid.Columns>
             <DataGrid.Resources>
@@ -58,5 +61,9 @@
                 </Style>
             </DataGrid.Resources>
         </DataGrid>
+
+        <Button Grid.Row="4" Grid.Column="4" Width="100" Height="40" Click="ButtonBase_OnClick">
+            <TextBlock Text="{Binding Path=ButtonText,Mode=TwoWay}" FontWeight="Bold"></TextBlock>
+        </Button>
     </Grid>
 </Window>
