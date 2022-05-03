@@ -21,7 +21,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
+
         <coordinateSystemControl:CoordinateSystemControl Grid.Column="0" 
                                                          Grid.ColumnSpan="2" 
                                                          Grid.Row="1" 
@@ -37,16 +37,14 @@
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"
                   RowHeaderWidth="0"
-                  ItemsSource="{Binding Segments}"
-                  AutoGenerateColumns="False">
+                  ItemsSource="{Binding Path=Segments, Mode=TwoWay}"
+                  AutoGenerateColumns="False"
+                  CanUserSortColumns="False"
+                  CanUserReorderColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="X1" Binding="{Binding X1, UpdateSourceTrigger=PropertyChanged}">
+                <DataGridTextColumn Header="Starting point: X1, Y1" Binding="{Binding Path=StartingPoint, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Y1" Binding="{Binding Y1, UpdateSourceTrigger=PropertyChanged}">
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="X2" Binding="{Binding X2, UpdateSourceTrigger=PropertyChanged}">
-                </DataGridTextColumn>
-                <DataGridTextColumn Header="Y2" Binding="{Binding Y2, UpdateSourceTrigger=PropertyChanged}">
+                <DataGridTextColumn Header="Ending point: X2, Y2" Binding="{Binding Path=EndingPoint, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                 </DataGridTextColumn>
             </DataGrid.Columns>
             <DataGrid.Resources>

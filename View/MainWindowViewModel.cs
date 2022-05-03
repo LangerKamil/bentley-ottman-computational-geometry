@@ -1,19 +1,21 @@
 ﻿using GeometriaObliczeniowa.Models;
+using Prism.Mvvm;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace GeometriaObliczeniowa.View
 {
-    public sealed class MainWindowViewModel : ViewModelBase
+    public sealed class MainWindowViewModel : BindableBase
     {
         #region Fields
-        private ObservableCollection<SegmentsViewModel> segments;
+        private ObservableCollection<Segment> segments;
         #endregion
 
         #region Properties
-        public ObservableCollection<SegmentsViewModel> Segments
+        public ObservableCollection<Segment> Segments
         {
-            get { return this.segments; }
-            set { this.segments = value; OnPropertyChanged(); }
+            get => this.segments;
+            set => SetProperty(ref this.segments, value);
         }
         #endregion
 
@@ -25,26 +27,24 @@ namespace GeometriaObliczeniowa.View
         #endregion
 
         #region Methods
-        public void InitializeProperties()
+        private void InitializeProperties()
         {
-            this.Segments = new ObservableCollection<SegmentsViewModel>()
+            this.Segments = new ObservableCollection<Segment>()
             {
-                new SegmentsViewModel()
+                new Segment()
                 {
-                    X1 = 20,
-                    Y1 = -100,
-                    X2 = 76,
-                    Y2 = 13,
+                    StartingPoint = new Point(42,48),
+                    EndingPoint = new Point(23,88)
                 },
-                new SegmentsViewModel()
+                new Segment()
                 {
-                    X1 = 57,
-                    Y1 = 78,
-                    X2 = -13,
-                    Y2 = -47,
+                    StartingPoint = new Point(84,12),
+                    EndingPoint = new Point(72,11)
                 },
             };
         }
+
+
         #endregion
     }
 }

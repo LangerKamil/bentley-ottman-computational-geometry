@@ -11,11 +11,10 @@ namespace GeometriaObliczeniowa
         #region Properties
         public MainWindowViewModel MainWindowViewModel
         {
-            get { return (MainWindowViewModel)GetValue(MainWindowViewModelProperty); }
-            set { SetValue(MainWindowViewModelProperty, value); }
+            get => (MainWindowViewModel)GetValue(MainWindowViewModelProperty);
+            set => SetValue(MainWindowViewModelProperty, value);
         }
 
-        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty MainWindowViewModelProperty =
             DependencyProperty.Register(nameof(MainWindowViewModel), typeof(MainWindowViewModel), typeof(MainWindow), new PropertyMetadata(default));
         #endregion
@@ -27,26 +26,22 @@ namespace GeometriaObliczeniowa
             this.MainWindowViewModel = new MainWindowViewModel();
             this.DataContext = this.MainWindowViewModel;
         }
-        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
-        {
-            if (e.Property.Name == nameof(MainWindowViewModel))
-            {
-                this.Draw();
-            }
-
-            base.OnPropertyChanged(e);
-        }
-
-        #endregion
-
-        #region Events
         #endregion
 
         #region Methods
-        private void Draw()
+        private void ProceedCoordinateSystemRendering()
         {
-            List<SegmentsViewModel> segments = this.MainWindowViewModel.Segments.ToList();
-            segments.ForEach(c => this.coordinateSystem.Draw(c));
+            List<Segment> segments = this.MainWindowViewModel.Segments.ToList();
+            this.coordinateSystem.DrawCoordinateSystem(segments);
+        }
+
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            if (MainWindowViewModel != null)
+            {
+                this.ProceedCoordinateSystemRendering();
+            }
+            base.OnPropertyChanged(e);
         }
         #endregion
     }

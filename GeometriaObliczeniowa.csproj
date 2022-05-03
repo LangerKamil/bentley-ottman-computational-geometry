@@ -66,8 +66,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="View\MainWindowViewModel.cs" />
-    <Compile Include="View\SegmentsViewModel.cs" />
-    <Compile Include="View\ViewModelBase.cs" />
     <Page Include="Controls\CoordinateSystemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
