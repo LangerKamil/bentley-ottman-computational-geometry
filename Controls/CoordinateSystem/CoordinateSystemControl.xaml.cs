@@ -1,7 +1,8 @@
-﻿using System;
+﻿using GeometriaObliczeniowa.Common.Extensions;
 using GeometriaObliczeniowa.Controls.CoordinateSystem;
-using GeometriaObliczeniowa.Models;
-using System.Collections.Generic;
+using GeometriaObliczeniowa.View.MainView;
+using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,12 +16,53 @@ namespace GeometriaObliczeniowa.Controls
     {
         #region Fields
         private CoordinateSystemElements coordinateSystem;
-        private List<Segment> segments;
         private readonly SolidColorBrush blackStroke = new SolidColorBrush(Color.FromRgb(0, 0, 0));
         private Storyboard storyboard;
         #endregion
 
         #region Properties
+        public SegmentsViewModel SegmentsViewModel
+        {
+            get { return (SegmentsViewModel)GetValue(SegmentsViewModelProperty); }
+            set { SetValue(SegmentsViewModelProperty, value); }
+        }
+
+        public static readonly DependencyProperty SegmentsViewModelProperty =
+            DependencyProperty.Register(
+                name: nameof(SegmentsViewModel),
+                propertyType: typeof(SegmentsViewModel),
+                ownerType: typeof(CoordinateSystemControl),
+                typeMetadata: new PropertyMetadata(default));
+
+
+
+        public ObservableCollection<SegmentViewModel> Segments
+        {
+            get { return (ObservableCollection<SegmentViewModel>)GetValue(SegmentsProperty); }
+            set { SetValue(SegmentsProperty, value); }
+        }
+
+        public static readonly DependencyProperty SegmentsProperty =
+            DependencyProperty.Register(
+                name: nameof(Segments),
+                propertyType: typeof(ObservableCollection<SegmentViewModel>),
+                ownerType: typeof(CoordinateSystemControl),
+                typeMetadata: new PropertyMetadata(default));
+
+
+
+        public bool IsSweepRunning
+        {
+            get { return (bool)GetValue(IsSweepRunningProperty); }
+            set { SetValue(IsSweepRunningProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsSweepRunningProperty =
+            DependencyProperty.Register(
+                name: nameof(IsSweepRunning),
+                propertyType: typeof(bool),
+                ownerType: typeof(CoordinateSystemControl),
+                typeMetadata: new PropertyMetadata(default));
         #endregion
 
         #region Constructors
@@ -33,44 +75,50 @@ namespace GeometriaObliczeniowa.Controls
         #endregion
 
         #region Methods       
-        public void RenderCoordinateSystem(List<Segment> segments)
+        public void RenderCoordinateSystem()
         {
             this.DrawCoordinateSystem();
-            segments.ForEach(this.DrawSegment);
-            this.segments = segments;
+
+            if (this.Segments != null)
+            {
+                this.Segments.ForEach(this.DrawSegment);
+            }
         }
 
-        public bool RunSweep(bool isRunning)
+        public void RunSweep()
         {
-            if (isRunning)
+            if (this.IsSweepRunning)
             {
                 this.AnimateSweep();
             }
-            else if (this.segments.Any())
+            else if (this.SegmentsViewModel.Segments.Any())
             {
-                this.RenderCoordinateSystem(segments);
+                this.RenderCoordinateSystem();
             }
             else
             {
                 this.DrawCoordinateSystem();
             }
-            return false;
+
+            this.IsSweepRunning = false;
         }
 
         private void InitializeProperties()
         {
             this.coordinateSystem = new CoordinateSystemElements();
+            this.IsSweepRunning = false;
+            //this.SegmentsViewModel = new SegmentsViewModel();
         }
 
-        private void DrawSegment(Segment segment)
+        private void DrawSegment(SegmentViewModel segmentsViewModel)
         {
             Line line = new Line();
             line.StrokeThickness = 2;
             line.Stroke = blackStroke;
-            line.X1 = segment.StartingPoint.X;
-            line.Y1 = segment.StartingPoint.Y;
-            line.X2 = segment.EndingPoint.X;
-            line.Y2 = segment.EndingPoint.Y;
+            line.X1 = segmentsViewModel.StartingPoint.X;
+            line.Y1 = segmentsViewModel.StartingPoint.Y;
+            line.X2 = segmentsViewModel.EndingPoint.X;
+            line.Y2 = segmentsViewModel.EndingPoint.Y;
 
             this.coordinateSystemControl.Children.Add(line);
         }
@@ -111,7 +159,23 @@ namespace GeometriaObliczeniowa.Controls
 
             this.coordinateSystemControl.Children.Add(sweeperLine);
             storyboard.Begin(this);
+        }
 
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            if (e.Property.Name == nameof(SegmentsViewModel.Segments))
+            {
+                if (this.SegmentsViewModel != null)
+                {
+                    this.RenderCoordinateSystem();
+                }
+            }
+
+            if (e.Property.Name == nameof(IsSweepRunning))
+            {
+                this.RunSweep();
+            }
+            base.OnPropertyChanged(e);
         }
         #endregion
     }
