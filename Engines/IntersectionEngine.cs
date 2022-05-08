@@ -1,6 +1,6 @@
 ﻿namespace GeometriaObliczeniowa.Engines
 {
-    internal class IntersectionEngine
+    public sealed class IntersectionEngine
     {
     }
 }

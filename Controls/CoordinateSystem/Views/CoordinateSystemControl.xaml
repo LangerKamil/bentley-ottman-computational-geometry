@@ -13,7 +13,7 @@
         <converters:LinePointToEllipsePositionConverter x:Key="LinePointToEllipsePositionConverter"/>
 
         <Storyboard x:Key="SweeperAnimation">
-            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" From="0" To="328" Duration="00:00:05.000" Completed="Timeline_OnCompleted">
+            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" From="330" To="0" Duration="00:00:05.000" Completed="Timeline_OnCompleted">
                 <DoubleAnimation.EasingFunction>
                     <CubicEase EasingMode="EaseInOut"/>
                 </DoubleAnimation.EasingFunction>
@@ -27,8 +27,7 @@
                     <Canvas x:Name="coordinateSystemControl" 
                                     Background="#fdf8f1"
                                     HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    RenderTransform="1 0 0 1 0 0">
+                                    VerticalAlignment="Center">
                     </Canvas>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
@@ -40,8 +39,7 @@
                                 <Canvas x:Name="coordinateSystemControl" 
                                     Background="#fdf8f1"
                                     HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    RenderTransform="1 0 0 1 0 0">
+                                    VerticalAlignment="Center">
                                 </Canvas>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
@@ -83,9 +81,9 @@
               StrokeThickness="3" 
               VerticalAlignment="top" 
               Canvas.ZIndex="-1"
-              RenderTransformOrigin="1,0.5">
+              >
             <Line.RenderTransform>
-                <TranslateTransform/>
+                <TranslateTransform Y="330"/>
             </Line.RenderTransform>
             <Line.Style>
                 <Style>
@@ -101,7 +99,7 @@
             </Line.Style>
         </Line>
 
-        <TextBlock Text="X" FontWeight="Bold" FontSize="15" FontStyle="Italic"  VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,20,10,0" Panel.ZIndex="3"></TextBlock>
-        <TextBlock Text="Y" FontWeight="Bold" FontSize="15" FontStyle="Italic"  VerticalAlignment="Top" HorizontalAlignment="Center" Margin="20,5,0,0" Panel.ZIndex="3"></TextBlock>
+        <TextBlock Text="X" FontWeight="Bold" FontSize="15" FontStyle="Italic"  VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,20,10,0" Panel.ZIndex="3" RenderTransform="1,0,0 -1,0,0"></TextBlock>
+        <TextBlock Text="Y" FontWeight="Bold" FontSize="15" FontStyle="Italic"  VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="20,0,0,-15" Panel.ZIndex="3" RenderTransform="1,0,0 -1,0,0"></TextBlock>
     </Grid>
 </UserControl>

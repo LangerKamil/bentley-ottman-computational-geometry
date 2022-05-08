@@ -23,12 +23,13 @@
         </Grid.RowDefinitions>
 
         <views:CoordinateSystemControl Grid.Column="0" 
-                                                         Grid.ColumnSpan="2" 
-                                                         Grid.Row="0" 
-                                                         Grid.RowSpan="4" 
-                                                         Background="#fdf8f1"
-                                                         BorderThickness="1"
-                                                         BorderBrush="Black"/>
+                                     Grid.ColumnSpan="2" 
+                                     Grid.Row="0" 
+                                     Grid.RowSpan="4" 
+                                     Background="#fdf8f1"
+                                     BorderThickness="1"
+                                     BorderBrush="Black"
+                                     LayoutTransform="1,0,0 -1,0,0"/>
         <DataGrid Grid.Column="2" 
                   Grid.ColumnSpan="2" 
                   Grid.Row="0" 
@@ -44,10 +45,10 @@
                   CanUserSortColumns="False"
                   CanUserReorderColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Starting X" Binding="{Binding Path=StartingPointX, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="Starting Y" Binding="{Binding Path=StartingPointY, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="Ending X" Binding="{Binding Path=EndingPointX, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="Ending Y" Binding="{Binding Path=EndingPointY, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"/>
+                <DataGridTextColumn Header="Point 1-X" Binding="{Binding Path=StartingPointX, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"/>
+                <DataGridTextColumn Header="Point 1-Y" Binding="{Binding Path=StartingPointY, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"/>
+                <DataGridTextColumn Header="Point 2-X" Binding="{Binding Path=EndingPointX, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"/>
+                <DataGridTextColumn Header="Point 2-Y" Binding="{Binding Path=EndingPointY, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"/>
             </DataGrid.Columns>
             <DataGrid.Resources>
                 <Style TargetType="{x:Type DataGridColumnHeader}">

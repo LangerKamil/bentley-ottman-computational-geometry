@@ -12,7 +12,7 @@ using Prism.Commands;
 
 namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
 {
-    public class CoordinateSystemControlViewModel : ViewModelBase
+    public sealed class CoordinateSystemControlViewModel : ViewModelBase
     {
 
         #region Fields
