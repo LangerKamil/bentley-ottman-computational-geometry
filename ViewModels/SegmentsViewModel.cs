@@ -1,19 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using GeometriaObliczeniowa.Common.BaseClasses;
 using GeometriaObliczeniowa.Common.Events;
 using GeometriaObliczeniowa.Common.Extensions;
 using GeometriaObliczeniowa.Models;
-using Prism.Mvvm;
+using Prism.Events;
 
-namespace GeometriaObliczeniowa.View.MainView
+namespace GeometriaObliczeniowa.ViewModels
 {
     public sealed class SegmentsViewModel : ViewModelBase
     {
         #region Fields
         private ObservableCollection<SegmentViewModel> segments;
+        private readonly IEventAggregator eventAggregator;
         private readonly SegmentsDTO segmentsDTO;
         #endregion
 
@@ -26,8 +27,10 @@ namespace GeometriaObliczeniowa.View.MainView
         #endregion
 
         #region Constructors
-        public SegmentsViewModel(SegmentsDTO segmentsDTO)
+        public SegmentsViewModel(IEventAggregator eventAggregator,
+            SegmentsDTO segmentsDTO)
         {
+            this.eventAggregator = eventAggregator;
             this.segmentsDTO = segmentsDTO;
             this.InitializeProperties();
             this.InitializeEvents();
@@ -91,23 +94,30 @@ namespace GeometriaObliczeniowa.View.MainView
         private void OnUpdateRequested(object sender, ParentUpdateEventArgs args)
         {
             this.UpdateBaseModel();
+            this.eventAggregator.GetEvent<ViewModelSendEvent>().Publish(this);
             base.InvokeParentUpdate(sender, args);
         }
 
         public void MapDTOtoVM(ObservableCollection<SegmentViewModel> vmCollection, SegmentsDTO segmentsDTO)
         {
             segmentsDTO.Segments.ForEach(c =>
-                vmCollection.ForEach(x => x.StartingPoint = c.StartingPoint));
-            segmentsDTO.Segments.ForEach(c =>
-                vmCollection.ForEach(x => x.EndingPoint = c.EndingPoint));
+                vmCollection.ForEach(x =>
+                {
+                    x.StartingPointX = c.StartingPoint.X;
+                    x.StartingPointY = c.StartingPoint.Y;
+                    x.EndingPointX = c.EndingPoint.X;
+                    x.EndingPointY = c.EndingPoint.Y;
+                }));
         }
 
         public void MapVMtoDTO(ObservableCollection<SegmentViewModel> vmCollection, SegmentsDTO segmentsDTO)
         {
             vmCollection.ForEach(c =>
-                segmentsDTO.Segments.ForEach(x => x.StartingPoint = c.StartingPoint));
-            vmCollection.ForEach(c =>
-                segmentsDTO.Segments.ForEach(x => x.EndingPoint = c.EndingPoint));
+                segmentsDTO.Segments.ForEach(x =>
+                {
+                    x.StartingPoint = new Point(c.StartingPointX, c.StartingPointY);
+                    x.EndingPoint = new Point(c.EndingPointX, c.EndingPointY);
+                }));
         }
         #endregion
     }

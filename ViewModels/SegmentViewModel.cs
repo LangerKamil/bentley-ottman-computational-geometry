@@ -1,30 +1,44 @@
-﻿using GeometriaObliczeniowa.Common.BaseClasses;
-using GeometriaObliczeniowa.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
+using GeometriaObliczeniowa.Common.BaseClasses;
+using GeometriaObliczeniowa.Models;
 
-namespace GeometriaObliczeniowa.View.MainView
+namespace GeometriaObliczeniowa.ViewModels
 {
     public sealed class SegmentViewModel : ViewModelBase
     {
         #region Fields
         private readonly SegmentDTO segmentDTO;
-        private Point startingPoint;
-        private Point endingPoint;
+        private double startingPointX;
+        private double startingPointY;
+        private double endingPointX;
+        private double endingPointY;
         #endregion
 
         #region Properties
-        public Point StartingPoint
+        public double StartingPointX
         {
-            get { return this.startingPoint; }
-            set { SetProperty(ref this.startingPoint, value); }
+            get { return this.startingPointX; }
+            set { SetProperty(ref this.startingPointX, value); }
         }
 
-        public Point EndingPoint
+        public double StartingPointY
         {
-            get { return endingPoint; }
-            set { SetProperty(ref endingPoint, value); }
+            get { return this.startingPointY; }
+            set { SetProperty(ref this.startingPointY, value); }
+        }
+
+        public double EndingPointX
+        {
+            get { return this.endingPointX; }
+            set { SetProperty(ref this.endingPointX, value); }
+        }
+
+        public double EndingPointY
+        {
+            get { return this.endingPointY; }
+            set { SetProperty(ref this.endingPointY, value); }
         }
         #endregion
 
@@ -41,8 +55,6 @@ namespace GeometriaObliczeniowa.View.MainView
         public override void InitializeProperties()
         {
             base.InitializingProperties = true;
-            this.StartingPoint = new Point(0, 0);
-            this.EndingPoint = new Point(0, 0);
             base.InitializingProperties = false;
         }
 
@@ -66,16 +78,18 @@ namespace GeometriaObliczeniowa.View.MainView
             }
             else
             {
-                this.segmentDTO.StartingPoint = this.StartingPoint;
-                this.segmentDTO.EndingPoint = this.EndingPoint;
+                this.segmentDTO.StartingPoint = new Point(this.StartingPointX, this.StartingPointY);
+                this.segmentDTO.EndingPoint = new Point(this.EndingPointX, this.EndingPointY);
             }
         }
 
         public void UpdateViewModel()
         {
             base.InitializingProperties = true;
-            this.StartingPoint = this.segmentDTO.StartingPoint;
-            this.EndingPoint = this.segmentDTO.EndingPoint;
+            this.StartingPointX = this.segmentDTO.StartingPoint.X;
+            this.StartingPointY = this.segmentDTO.StartingPoint.Y;
+            this.EndingPointX = this.segmentDTO.EndingPoint.X;
+            this.EndingPointY = this.segmentDTO.EndingPoint.Y;
             base.InitializingProperties = false;
         }
 

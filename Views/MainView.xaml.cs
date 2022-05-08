@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace GeometriaObliczeniowa.View.MainView
+namespace GeometriaObliczeniowa.Views
 {
     /// <summary>
     /// Interaction logic for MainView.xaml

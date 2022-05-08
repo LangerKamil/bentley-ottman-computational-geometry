@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GeometriaObliczeniowa.Common.Events
 {
-    public class ParentUpdateEventArgs : EventArgs
+    public sealed class ParentUpdateEventArgs : EventArgs
     {
         #region Properties
         public List<string> PropertyNames { get; private set; }

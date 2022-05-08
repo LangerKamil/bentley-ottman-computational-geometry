@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace GeometriaObliczeniowa.Controls.CoordinateSystem
+namespace GeometriaObliczeniowa.Controls.CoordinateSystem.Models
 {
     public sealed class CoordinateSystemElements
     {

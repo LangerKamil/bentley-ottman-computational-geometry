@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace GeometriaObliczeniowa
+namespace GeometriaObliczeniowa.Views
 {
     public partial class MainWindow : Window
     {
