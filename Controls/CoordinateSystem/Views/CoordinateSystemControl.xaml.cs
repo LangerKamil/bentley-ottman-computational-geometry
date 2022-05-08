@@ -47,7 +47,7 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.Views
 
         //public void RunSweep()
         //{
-        //    if (this.IsSweepRunning)
+        //    if (this.IsSweeperRunning)
         //    {
         //        this.AnimateSweep();
         //    }
@@ -60,13 +60,13 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.Views
         //        this.DrawCoordinateSystem();
         //    }
 
-        //    this.IsSweepRunning = false;
+        //    this.IsSweeperRunning = false;
         //}
 
         //private void InitializeProperties()
         //{
         //    this.coordinateSystemElements = new CoordinateSystemElements();
-        //    //this.IsSweepRunning = false;
+        //    //this.IsSweeperRunning = false;
         //}
 
 
@@ -115,7 +115,7 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.Views
         //        this.RenderCoordinateSystem();
         //    }
 
-        //    if (e.Property.Name == nameof(IsSweepRunning))
+        //    if (e.Property.Name == nameof(IsSweeperRunning))
         //    {
         //        this.RunSweep();
         //    }

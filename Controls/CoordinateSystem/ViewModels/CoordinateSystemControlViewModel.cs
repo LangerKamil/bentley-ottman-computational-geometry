@@ -18,7 +18,7 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
         private readonly IEventAggregator eventAggregator;
         private CoordinateSystemElements coordinateSystemElements;
         private ObservableCollection<SegmentsViewModel> segmentsViewModel;
-        private bool isSweepRunning;
+        private bool isSweeperRunning;
         #endregion
 
         #region Properties
@@ -34,10 +34,10 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
             set { SetProperty(ref this.coordinateSystemElements, value); }
         }
 
-        public bool IsSweepRunning
+        public bool IsSweeperRunning
         {
-            get { return isSweepRunning; }
-            set { SetProperty(ref isSweepRunning, value); }
+            get { return isSweeperRunning; }
+            set { SetProperty(ref isSweeperRunning, value); }
         }
         #endregion
 
@@ -59,7 +59,7 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
         {
             this.CoordinateSystemElements = new CoordinateSystemElements();
             this.SegmentsViewModel = new ObservableCollection<SegmentsViewModel>();
-            this.IsSweepRunning = false;
+            this.IsSweeperRunning = false;
         }
 
         public override void InitializeEvents()
@@ -67,7 +67,9 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
             this.PropertyChanged += base.OnPropertyChanged;
             this.HandlePropertyChangedMethod += this.OnHandlePropertyChanged;
             this.eventAggregator.GetEvent<ViewModelSendEvent>().Subscribe(OnViewModelReceived);
+            this.eventAggregator.GetEvent<IsSweeperRunnigEvent>().Subscribe(RunSweeper);
         }
+
 
         public override void Dispose()
         {
@@ -89,7 +91,14 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
                 SegmentsViewModel segmentsViewModel = (SegmentsViewModel)viewModel;
                 this.SegmentsViewModel.Clear();
                 this.SegmentsViewModel.Add(segmentsViewModel);
+            }
+        }
 
+        private void RunSweeper(bool shouldSweeperRun)
+        {
+            if (shouldSweeperRun)
+            {
+                this.IsSweeperRunning = true;
             }
         }
         #endregion

@@ -57,8 +57,49 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <Line X1="1800" X2="0" Y1="0" Y2="0" Stroke="{Binding CoordinateSystemElements.Stroke}" StrokeThickness="{Binding CoordinateSystemElements.StrokeThickness}" VerticalAlignment="Center" Canvas.ZIndex="-1"/>
-        <Line X1="0" X2="0" Y1="1800" Y2="0" Stroke="{Binding CoordinateSystemElements.Stroke}" StrokeThickness="{Binding CoordinateSystemElements.StrokeThickness}" HorizontalAlignment="Center" Canvas.ZIndex="-1"/>
+
+        <Line X1="1800" X2="0" Y1="0" Y2="0" 
+              Stroke="{Binding CoordinateSystemElements.Stroke}" 
+              StrokeThickness="{Binding CoordinateSystemElements.StrokeThickness}" 
+              VerticalAlignment="Center" 
+              Canvas.ZIndex="-1"/>
+
+        <Line X1="0" X2="0" Y1="1800" Y2="0" 
+              Stroke="{Binding CoordinateSystemElements.Stroke}" 
+              StrokeThickness="{Binding CoordinateSystemElements.StrokeThickness}" 
+              HorizontalAlignment="Center" 
+              Canvas.ZIndex="-1"/>
+
+        <Line X1="1800" X2="0" Y1="0" Y2="0" 
+              Stroke="Red" 
+              StrokeThickness="3" 
+              VerticalAlignment="top" 
+              Canvas.ZIndex="-1"
+              RenderTransformOrigin="1,0.5">
+            <Line.RenderTransform>
+                <TranslateTransform/>
+            </Line.RenderTransform>
+            <Line.Style>
+                <Style TargetType="Line">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsSweeperRunning}" Value="True">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" To="350" Duration="00:00:05.000" >
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseInOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Line.Style>
+        </Line>
+
         <TextBlock Text="X" FontWeight="Bold" FontSize="15" FontStyle="Italic"  VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,20,10,0" Panel.ZIndex="3"></TextBlock>
         <TextBlock Text="Y" FontWeight="Bold" FontSize="15" FontStyle="Italic"  VerticalAlignment="Top" HorizontalAlignment="Center" Margin="20,5,0,0" Panel.ZIndex="3"></TextBlock>
     </Grid>

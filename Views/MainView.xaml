@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:coordinateSystemControl="clr-namespace:GeometriaObliczeniowa.Controls"
              mc:Ignorable="d"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:views="clr-namespace:GeometriaObliczeniowa.Controls.CoordinateSystem.Views"
@@ -62,8 +61,8 @@
             </DataGrid.Resources>
         </DataGrid>
 
-        <Button Grid.Row="4" Grid.Column="4" Width="100" Height="40">
-            <TextBlock Text="{Binding Path=ButtonText,Mode=TwoWay}"  FontWeight="Bold"></TextBlock>
+        <Button Grid.Row="4" Grid.Column="4" Width="100" Height="40" Command="{Binding RunSweeperCommand}" IsEnabled="{Binding IsSweeperAvailable}">
+            <TextBlock Text="{Binding Path=ButtonText}" FontWeight="Bold"></TextBlock>
         </Button>
     </Grid>
 </UserControl>

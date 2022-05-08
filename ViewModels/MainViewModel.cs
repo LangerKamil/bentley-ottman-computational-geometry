@@ -1,5 +1,8 @@
-﻿using GeometriaObliczeniowa.Common.BaseClasses;
+﻿using System.Windows.Input;
+using GeometriaObliczeniowa.Common.BaseClasses;
+using GeometriaObliczeniowa.Common.Events;
 using GeometriaObliczeniowa.Models;
+using Prism.Commands;
 using Prism.Events;
 
 namespace GeometriaObliczeniowa.ViewModels
@@ -10,7 +13,8 @@ namespace GeometriaObliczeniowa.ViewModels
         #region Fields
         private readonly IEventAggregator eventAggregator;
         private SegmentsViewModel segmentsViewModel;
-        private bool isRunning;
+        private bool isSweeperAvailable;
+        private string buttonText;
         #endregion
 
         #region Properties
@@ -20,21 +24,30 @@ namespace GeometriaObliczeniowa.ViewModels
             set => SetProperty(ref this.segmentsViewModel, value);
         }
 
-        public bool IsRunning
+        public bool IsSweeperAvailable
         {
-            get => this.isRunning;
-            set => SetProperty(ref this.isRunning, value);
+            get => this.isSweeperAvailable;
+            set => SetProperty(ref this.isSweeperAvailable, value);
         }
 
-        public string ButtonText { get; set; }
+        public string ButtonText
+        {
+            get { return buttonText; }
+            set { SetProperty(ref buttonText, value); }
+        }
+        #endregion
+
+        #region Commands
+        public ICommand RunSweeperCommand { get; set; }
         #endregion
 
         #region Constructors
         public MainViewModel(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
-            InitializeProperties();
-            InitializeEvents();
+            this.InitializeProperties();
+            this.InitializeEvents();
+            this.InitializeCommands();
         }
         #endregion
 
@@ -44,7 +57,7 @@ namespace GeometriaObliczeniowa.ViewModels
             base.InitializingProperties = true;
 
             this.SegmentsViewModel = new SegmentsViewModel(eventAggregator, new SegmentsDTO());
-            this.IsRunning = false;
+            this.IsSweeperAvailable = true;
             this.ButtonText = "Run";
 
             base.InitializingProperties = false;
@@ -56,6 +69,22 @@ namespace GeometriaObliczeniowa.ViewModels
 
         public override void Dispose()
         {
+        }
+        private void InitializeCommands()
+        {
+            this.RunSweeperCommand = new DelegateCommand(Execute, CanExecute);
+        }
+
+        private bool CanExecute()
+        {
+            return this.IsSweeperAvailable;
+        }
+
+        private void Execute()
+        {
+            this.IsSweeperAvailable = false;
+            this.eventAggregator.GetEvent<IsSweeperRunnigEvent>().Publish(true);
+            this.ButtonText = "Running";
         }
         #endregion
     }

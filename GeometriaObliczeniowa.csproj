@@ -80,6 +80,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\Events\IsSweeperRunnigEvent.cs" />
     <Compile Include="Common\Events\ViewModelSendEvent.cs" />
     <Compile Include="Controls\CoordinateSystem\Converters\LinePointToEllipsePositionConverter.cs" />
     <Compile Include="IoCContainer.cs" />
