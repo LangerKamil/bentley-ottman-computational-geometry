@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
+using GeometriaObliczeniowa.Controls.CoordinateSystem.Models;
+using GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using GeometriaObliczeniowa.Common.Extensions;
-using GeometriaObliczeniowa.Controls.CoordinateSystem.Models;
-using GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels;
-using GeometriaObliczeniowa.ViewModels;
 
 namespace GeometriaObliczeniowa.Controls.CoordinateSystem.Views
 {
@@ -29,8 +23,6 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.Views
         public CoordinateSystemControl()
         {
             this.InitializeComponent();
-            //this.InitializeProperties();
-            //this.DrawCoordinateSystem();
         }
         #endregion
 
@@ -122,5 +114,11 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.Views
         //    base.OnPropertyChanged(e);
         //}
         #endregion
+
+        private void Timeline_OnCompleted(object sender, EventArgs e)
+        {
+            CoordinateSystemControlViewModel vm = this.DataContext as CoordinateSystemControlViewModel;
+            vm.OnSweeperCompletedCommand.Execute(true);
+        }
     }
 }

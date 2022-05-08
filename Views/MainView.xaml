@@ -44,10 +44,10 @@
                   CanUserSortColumns="False"
                   CanUserReorderColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Starting point X" Binding="{Binding Path=StartingPointX, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="Starting point Y" Binding="{Binding Path=StartingPointY, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="Ending point X" Binding="{Binding Path=EndingPointX, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="Ending point Y" Binding="{Binding Path=EndingPointY, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"/>
+                <DataGridTextColumn Header="Starting X" Binding="{Binding Path=StartingPointX, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"/>
+                <DataGridTextColumn Header="Starting Y" Binding="{Binding Path=StartingPointY, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"/>
+                <DataGridTextColumn Header="Ending X" Binding="{Binding Path=EndingPointX, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"/>
+                <DataGridTextColumn Header="Ending Y" Binding="{Binding Path=EndingPointY, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"/>
             </DataGrid.Columns>
             <DataGrid.Resources>
                 <Style TargetType="{x:Type DataGridColumnHeader}">
@@ -61,7 +61,10 @@
             </DataGrid.Resources>
         </DataGrid>
 
-        <Button Grid.Row="4" Grid.Column="4" Width="100" Height="40" Command="{Binding RunSweeperCommand}" IsEnabled="{Binding IsSweeperAvailable}">
+        <Button Grid.Row="4" Grid.Column="4" Width="100" Height="40" 
+                Command="{Binding RunSweeperCommand}" 
+                IsEnabled="{Binding IsSweeperAvailable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                Margin="70,40,0,0">
             <TextBlock Text="{Binding Path=ButtonText}" FontWeight="Bold"></TextBlock>
         </Button>
     </Grid>

@@ -11,6 +11,14 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <converters:LinePointToEllipsePositionConverter x:Key="LinePointToEllipsePositionConverter"/>
+
+        <Storyboard x:Key="SweeperAnimation">
+            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" From="0" To="328" Duration="00:00:05.000" Completed="Timeline_OnCompleted">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
     </UserControl.Resources>
     <Grid>
         <ItemsControl ItemsSource="{Binding SegmentsViewModel}">
@@ -58,19 +66,19 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <Line X1="1800" X2="0" Y1="0" Y2="0" 
+        <Line X1="800" X2="0" Y1="0" Y2="0" 
               Stroke="{Binding CoordinateSystemElements.Stroke}" 
               StrokeThickness="{Binding CoordinateSystemElements.StrokeThickness}" 
               VerticalAlignment="Center" 
               Canvas.ZIndex="-1"/>
 
-        <Line X1="0" X2="0" Y1="1800" Y2="0" 
+        <Line X1="0" X2="0" Y1="800" Y2="0" 
               Stroke="{Binding CoordinateSystemElements.Stroke}" 
               StrokeThickness="{Binding CoordinateSystemElements.StrokeThickness}" 
               HorizontalAlignment="Center" 
               Canvas.ZIndex="-1"/>
 
-        <Line X1="1800" X2="0" Y1="0" Y2="0" 
+        <Line X1="800" X2="0" Y1="0" Y2="0" 
               Stroke="Red" 
               StrokeThickness="3" 
               VerticalAlignment="top" 
@@ -80,18 +88,11 @@
                 <TranslateTransform/>
             </Line.RenderTransform>
             <Line.Style>
-                <Style TargetType="Line">
+                <Style>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsSweeperRunning}" Value="True">
                             <DataTrigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" To="350" Duration="00:00:05.000" >
-                                            <DoubleAnimation.EasingFunction>
-                                                <CubicEase EasingMode="EaseInOut"/>
-                                            </DoubleAnimation.EasingFunction>
-                                        </DoubleAnimation>
-                                    </Storyboard>
+                                <BeginStoryboard Storyboard="{StaticResource SweeperAnimation}">
                                 </BeginStoryboard>
                             </DataTrigger.EnterActions>
                         </DataTrigger>

@@ -65,6 +65,16 @@ namespace GeometriaObliczeniowa.ViewModels
 
         public override void InitializeEvents()
         {
+            this.eventAggregator.GetEvent<IsSweeperRunnigEvent>().Subscribe(OnSweeperStopped);
+        }
+
+        private void OnSweeperStopped(bool obj)
+        {
+            if (!obj)
+            {
+                this.IsSweeperAvailable = true;
+                this.ButtonText = "Run";
+            }
         }
 
         public override void Dispose()

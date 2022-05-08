@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
+using Prism.Commands;
 
 namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
 {
@@ -42,7 +43,7 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
         #endregion
 
         #region Commands
-        public ICommand DrawSegmentsCommand { get; private set; }
+        public ICommand OnSweeperCompletedCommand { get; set; }
         #endregion
 
         #region Constructors
@@ -51,6 +52,7 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
             this.eventAggregator = eventAggregator;
             this.InitializeProperties();
             this.InitializeEvents();
+            this.InitializeCommands();
         }
         #endregion
 
@@ -70,10 +72,25 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
             this.eventAggregator.GetEvent<IsSweeperRunnigEvent>().Subscribe(RunSweeper);
         }
 
-
         public override void Dispose()
         {
             throw new NotImplementedException();
+        }
+
+        private void InitializeCommands()
+        {
+            this.OnSweeperCompletedCommand = new DelegateCommand(Execute, CanExecute);
+        }
+
+        private bool CanExecute()
+        {
+            return this.IsSweeperRunning;
+        }
+
+        private void Execute()
+        {
+            this.StopSweeper();
+            this.eventAggregator.GetEvent<IsSweeperRunnigEvent>().Publish(false);
         }
 
         private List<string> OnHandlePropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -100,6 +117,11 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
             {
                 this.IsSweeperRunning = true;
             }
+        }
+
+        public void StopSweeper()
+        {
+            this.IsSweeperRunning = false;
         }
         #endregion
     }
