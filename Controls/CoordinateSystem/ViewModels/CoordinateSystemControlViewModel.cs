@@ -7,28 +7,31 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using GeometriaObliczeniowa.Models;
 
 namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
 {
     public class CoordinateSystemControlViewModel : ViewModelBase
     {
-        private readonly IEventAggregator eventAggregator;
 
         #region Fields
-        private ObservableCollection<CoordinateSystemElementsViewModel> canvasElements;
+        private readonly IEventAggregator eventAggregator;
+        private CoordinateSystemElements coordinateSystemElements;
+        private ObservableCollection<SegmentsViewModel> segmentsViewModel;
         private bool isSweepRunning;
         #endregion
 
         #region Properties
-        public ObservableCollection<CoordinateSystemElementsViewModel> CanvasElements
+        public ObservableCollection<SegmentsViewModel> SegmentsViewModel
         {
-            get { return this.canvasElements; }
-            set { SetProperty(ref this.canvasElements, value); }
+            get { return this.segmentsViewModel; }
+            set { SetProperty(ref this.segmentsViewModel, value); }
+        }
+
+        public CoordinateSystemElements CoordinateSystemElements
+        {
+            get { return this.coordinateSystemElements; }
+            set { SetProperty(ref this.coordinateSystemElements, value); }
         }
 
         public bool IsSweepRunning
@@ -54,7 +57,8 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
         #region Methods
         public override void InitializeProperties()
         {
-            this.CanvasElements = new ObservableCollection<CoordinateSystemElementsViewModel>();
+            this.CoordinateSystemElements = new CoordinateSystemElements();
+            this.SegmentsViewModel = new ObservableCollection<SegmentsViewModel>();
             this.IsSweepRunning = false;
         }
 
@@ -83,12 +87,11 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
             if (viewModel != null && viewModel is SegmentsViewModel)
             {
                 SegmentsViewModel segmentsViewModel = (SegmentsViewModel)viewModel;
-                this.CanvasElements.Clear();
-                this.CanvasElements.Add(new CoordinateSystemElementsViewModel(segmentsViewModel.Segments));
+                this.SegmentsViewModel.Clear();
+                this.SegmentsViewModel.Add(segmentsViewModel);
 
             }
         }
-
         #endregion
     }
 }

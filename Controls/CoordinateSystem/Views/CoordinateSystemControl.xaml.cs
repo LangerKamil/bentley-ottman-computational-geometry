@@ -39,9 +39,9 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.Views
         //{
         //    this.DrawCoordinateSystem();
 
-        //    if (this.Segments != null)
+        //    if (this.SegmentsViewModel != null)
         //    {
-        //        this.Segments.ForEach(this.DrawSegment);
+        //        this.SegmentsViewModel.ForEach(this.DrawSegment);
         //    }
         //}
 
@@ -51,7 +51,7 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.Views
         //    {
         //        this.AnimateSweep();
         //    }
-        //    else if (this.Segments.Any())
+        //    else if (this.SegmentsViewModel.Any())
         //    {
         //        this.RenderCoordinateSystem();
         //    }
@@ -110,7 +110,7 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.Views
 
         //protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         //{
-        //    if (this.Segments != null)
+        //    if (this.SegmentsViewModel != null)
         //    {
         //        this.RenderCoordinateSystem();
         //    }

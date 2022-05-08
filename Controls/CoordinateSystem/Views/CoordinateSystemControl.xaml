@@ -4,9 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:prism="http://prismlibrary.com/"
-             xmlns:viewModels="clr-namespace:GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels"
              xmlns:generalViewModels="clr-namespace:GeometriaObliczeniowa.ViewModels"
-             xmlns:models="clr-namespace:GeometriaObliczeniowa.Controls.CoordinateSystem.Models"
              xmlns:converters="clr-namespace:GeometriaObliczeniowa.Controls.CoordinateSystem.Converters"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
@@ -15,17 +13,7 @@
         <converters:LinePointToEllipsePositionConverter x:Key="LinePointToEllipsePositionConverter"/>
     </UserControl.Resources>
     <Grid>
-        <ItemsControl ItemsSource="{Binding CanvasElements}">
-            <!--<ItemsControl.Resources>
-                <DataTemplate DataType="viewModels:CoordinateSystemAxesViewModel">
-                    <Line X1="{Binding XAxis.Item1.X}" 
-                          Y1="{Binding YAxis.Item1.Y}"
-                          X2="{Binding XAxis.Item2.X}"
-                          Y2="{Binding YAxis.Item2.Y}"
-                          Stroke="{Binding Stroke}"
-                          StrokeThickness="{Binding StrokeThickness}"/>
-                </DataTemplate>-->
-            <!--</ItemsControl.Resources>-->
+        <ItemsControl ItemsSource="{Binding SegmentsViewModel}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas x:Name="coordinateSystemControl" 
@@ -37,15 +25,15 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate >
-                <DataTemplate DataType="viewModels:CoordinateSystemElementsViewModel">
+                <DataTemplate DataType="generalViewModels:SegmentsViewModel">
                     <ItemsControl ItemsSource="{Binding Segments}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <Canvas x:Name="coordinateSystemControl" 
-                                                Background="#fdf8f1"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                RenderTransform="1 0 0 -1 0 0">
+                                    Background="#fdf8f1"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    RenderTransform="1 0 0 1 0 0">
                                 </Canvas>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
@@ -57,7 +45,7 @@
                                       X2="{Binding EndingPointX}"
                                       Y2="{Binding EndingPointY}"
                                       Stroke="Black"
-                                      StrokeThickness="3"></Line>
+                                      StrokeThickness="3"/>
                                     <Ellipse Fill="Black" Width="10" Height="10" Canvas.Left="{Binding StartingPointX, Converter={StaticResource LinePointToEllipsePositionConverter}}" 
                                              Canvas.Top="{Binding StartingPointY, Converter={StaticResource LinePointToEllipsePositionConverter}}"/>
                                     <Ellipse Fill="Black" Width="10" Height="10" Canvas.Left="{Binding  EndingPointX, Converter={StaticResource LinePointToEllipsePositionConverter}}" 
@@ -69,7 +57,9 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <TextBlock Text="X" FontWeight="Bold" FontSize="15" FontStyle="Italic"  VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,20,10,0"></TextBlock>
-        <TextBlock Text="Y" FontWeight="Bold" FontSize="15" FontStyle="Italic"  VerticalAlignment="Top" HorizontalAlignment="Center" Margin="20,5,0,0"></TextBlock>
+        <Line X1="1800" X2="0" Y1="0" Y2="0" Stroke="{Binding CoordinateSystemElements.Stroke}" StrokeThickness="{Binding CoordinateSystemElements.StrokeThickness}" VerticalAlignment="Center" Canvas.ZIndex="-1"/>
+        <Line X1="0" X2="0" Y1="1800" Y2="0" Stroke="{Binding CoordinateSystemElements.Stroke}" StrokeThickness="{Binding CoordinateSystemElements.StrokeThickness}" HorizontalAlignment="Center" Canvas.ZIndex="-1"/>
+        <TextBlock Text="X" FontWeight="Bold" FontSize="15" FontStyle="Italic"  VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,20,10,0" Panel.ZIndex="3"></TextBlock>
+        <TextBlock Text="Y" FontWeight="Bold" FontSize="15" FontStyle="Italic"  VerticalAlignment="Top" HorizontalAlignment="Center" Margin="20,5,0,0" Panel.ZIndex="3"></TextBlock>
     </Grid>
 </UserControl>
