@@ -69,13 +69,23 @@
               StrokeThickness="{Binding CoordinateSystemElements.StrokeThickness}" 
               VerticalAlignment="Center" 
               Canvas.ZIndex="-1"/>
-
+        <Line X1="786" X2="0" Y1="5" Y2="5" 
+              Stroke="{Binding CoordinateSystemElements.Stroke}" 
+              StrokeThickness="10" 
+              StrokeDashArray="0.2,0.8"
+              VerticalAlignment="Center" 
+              Canvas.ZIndex="-1"/>
         <Line X1="0" X2="0" Y1="800" Y2="0" 
               Stroke="{Binding CoordinateSystemElements.Stroke}" 
               StrokeThickness="{Binding CoordinateSystemElements.StrokeThickness}" 
               HorizontalAlignment="Center" 
               Canvas.ZIndex="-1"/>
-
+        <Line X1="5" X2="5" Y1="786" Y2="0" 
+              Stroke="{Binding CoordinateSystemElements.Stroke}" 
+              StrokeThickness="10" 
+              HorizontalAlignment="Center"
+              StrokeDashArray="0.2,0.8"
+              Canvas.ZIndex="-1"/>
         <Line X1="800" X2="0" Y1="0" Y2="0" 
               Stroke="Red" 
               StrokeThickness="3" 

@@ -23,7 +23,7 @@ namespace GeometriaObliczeniowa.ViewModels
         private SegmentsViewModel segmentsViewModel;
         private bool isSweeperAvailable;
         private string buttonText;
-        private Point intersection;
+        private string intersection;
         #endregion
 
         #region Properties
@@ -45,7 +45,7 @@ namespace GeometriaObliczeniowa.ViewModels
             set { SetProperty(ref this.buttonText, value); }
         }
 
-        public Point Intersection
+        public string Intersection
         {
             get { return this.intersection; }
             set { SetProperty(ref this.intersection, value); }
@@ -89,6 +89,7 @@ namespace GeometriaObliczeniowa.ViewModels
         {
             if (!obj)
             {
+                this.Intersection = this.intersectionEngine.Intersection(GenerateEngineInput());
                 this.IsSweeperAvailable = true;
                 this.ButtonText = "Run";
             }
@@ -109,10 +110,11 @@ namespace GeometriaObliczeniowa.ViewModels
 
         private void Execute()
         {
+            this.Intersection = String.Empty;
             this.IsSweeperAvailable = false;
             this.eventAggregator.GetEvent<IsSweeperRunnigEvent>().Publish(true);
             this.ButtonText = "Running";
-            this.Intersection = this.intersectionEngine.Intersection(GenerateEngineInput());
+
         }
 
         private IntersectionEngineInput GenerateEngineInput()
