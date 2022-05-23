@@ -61,6 +61,12 @@
                 </Style>
             </DataGrid.Resources>
         </DataGrid>
+        <Border Grid.Row="2" Grid.Column="3" BorderBrush="Black" BorderThickness="1" Background="AliceBlue" Padding="5">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="{Binding Intersection.X}" FontSize="14" FontWeight="Bold"></TextBlock>
+                <TextBlock Text="{Binding Intersection.Y}" FontSize="14" FontWeight="Bold"></TextBlock>
+            </StackPanel>
+        </Border>
 
         <Button Grid.Row="4" Grid.Column="4" Width="100" Height="40" 
                 Command="{Binding RunSweeperCommand}" 
