@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Navigation;
-using GeometriaObliczeniowa.Common.BaseClasses;
+﻿using GeometriaObliczeniowa.Common.BaseClasses;
 using GeometriaObliczeniowa.Common.Events;
 using GeometriaObliczeniowa.Common.Extensions;
 using GeometriaObliczeniowa.Engines;
@@ -11,6 +6,10 @@ using GeometriaObliczeniowa.Engines.Interface;
 using GeometriaObliczeniowa.Models;
 using Prism.Commands;
 using Prism.Events;
+using System;
+using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Input;
 
 namespace GeometriaObliczeniowa.ViewModels
 {
@@ -89,7 +88,9 @@ namespace GeometriaObliczeniowa.ViewModels
         {
             if (!obj)
             {
-                this.Intersection = this.intersectionEngine.Intersection(GenerateEngineInput());
+                Point intersectionCoordinates = new Point();
+                this.Intersection = this.intersectionEngine.Intersection(GenerateEngineInput(), out intersectionCoordinates);
+                this.eventAggregator.GetEvent<EngineOutputSendEvent>().Publish(intersectionCoordinates);
                 this.IsSweeperAvailable = true;
                 this.ButtonText = "Run";
             }

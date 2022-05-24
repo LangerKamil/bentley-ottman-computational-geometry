@@ -61,13 +61,23 @@
                 </Style>
             </DataGrid.Resources>
         </DataGrid>
-        <Border Grid.Row="2" Grid.Column="3" BorderBrush="Black" BorderThickness="1" Background="AliceBlue" Padding="5">
+        <Border Grid.Row="1" 
+                Grid.Column="2" 
+                Grid.ColumnSpan="2" 
+                BorderBrush="Black" 
+                BorderThickness="1" 
+                Background="AliceBlue" 
+                Padding="5" 
+                Width="Auto"
+                MinWidth="200"
+                VerticalAlignment="Center" 
+                HorizontalAlignment="Center">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Text="{Binding Intersection}" FontSize="14" FontWeight="Bold"></TextBlock>
             </StackPanel>
         </Border>
 
-        <Button Grid.Row="4" Grid.Column="4" Width="100" Height="40" 
+        <Button Grid.Row="3" Grid.Column="3" Width="100" Height="40" 
                 Command="{Binding RunSweeperCommand}" 
                 IsEnabled="{Binding IsSweeperAvailable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                 Margin="70,40,0,0">

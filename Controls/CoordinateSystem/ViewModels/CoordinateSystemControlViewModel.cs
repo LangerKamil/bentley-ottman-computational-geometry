@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 using Prism.Commands;
 
@@ -20,6 +21,9 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
         private CoordinateSystemElements coordinateSystemElements;
         private ObservableCollection<SegmentsViewModel> segmentsViewModel;
         private bool isSweeperRunning;
+        private Point intersection;
+        private Visibility isIntersectionPointVisable;
+
         #endregion
 
         #region Properties
@@ -39,6 +43,18 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
         {
             get { return isSweeperRunning; }
             set { SetProperty(ref isSweeperRunning, value); }
+        }
+
+        public Point Intersection
+        {
+            get { return this.intersection; }
+            set { SetProperty(ref this.intersection, value); }
+        }
+
+        public Visibility IsIntersectionPointVisable
+        {
+            get { return this.isIntersectionPointVisable; }
+            set { SetProperty(ref this.isIntersectionPointVisable, value); }
         }
         #endregion
 
@@ -62,6 +78,8 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
             this.CoordinateSystemElements = new CoordinateSystemElements();
             this.SegmentsViewModel = new ObservableCollection<SegmentsViewModel>();
             this.IsSweeperRunning = false;
+            this.Intersection = new Point(0, 0);
+            this.IsIntersectionPointVisable = Visibility.Hidden;
         }
 
         public override void InitializeEvents()
@@ -70,6 +88,13 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
             this.HandlePropertyChangedMethod += this.OnHandlePropertyChanged;
             this.eventAggregator.GetEvent<ViewModelSendEvent>().Subscribe(OnViewModelReceived);
             this.eventAggregator.GetEvent<IsSweeperRunnigEvent>().Subscribe(RunSweeper);
+            this.eventAggregator.GetEvent<EngineOutputSendEvent>().Subscribe(OnEngineOutputReceived);
+        }
+
+        private void OnEngineOutputReceived(Point obj)
+        {
+            this.Intersection = obj;
+            this.IsIntersectionPointVisable = Visibility.Visible;
         }
 
         public override void Dispose()
@@ -115,6 +140,7 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
         {
             if (shouldSweeperRun)
             {
+                this.IsIntersectionPointVisable = Visibility.Hidden;
                 this.IsSweeperRunning = true;
             }
         }

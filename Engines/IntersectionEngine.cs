@@ -8,7 +8,7 @@ namespace GeometriaObliczeniowa.Engines
 {
     public sealed class IntersectionEngine : IIntersectionEngine
     {
-        public string Intersection(IntersectionEngineInput input)
+        public string Intersection(IntersectionEngineInput input, out Point coordinates)
         {
             double A1 = input.Line1End.Y - input.Line1Start.Y;
             double B1 = input.Line1Start.X - input.Line1End.X;
@@ -22,12 +22,20 @@ namespace GeometriaObliczeniowa.Engines
 
             if (determinant == 0)
             {
+                coordinates = new Point();
                 return "Lines are parallel!";
             }
 
             double X = (B2 * C1 - B1 * C2) / determinant;
             double Y = (A1 * C2 - A2 * C1) / determinant;
 
+            if (X > 200 || X < -200 || Y > 200 || Y < -200)  // TODO: Handle lines not intersecting
+            {
+                coordinates = new Point(X, Y);
+                return "Lines do not intersect!";
+            }
+
+            coordinates = new Point(X, Y);
             return $"Intersection at: X:{X},Y:{Y}";
         }
     }
