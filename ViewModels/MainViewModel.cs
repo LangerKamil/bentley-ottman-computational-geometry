@@ -88,9 +88,17 @@ namespace GeometriaObliczeniowa.ViewModels
         {
             if (!obj)
             {
-                Point intersectionCoordinates = new Point();
-                this.Intersection = this.intersectionEngine.Intersection(GenerateEngineInput(), out intersectionCoordinates);
-                this.eventAggregator.GetEvent<EngineOutputSendEvent>().Publish(intersectionCoordinates);
+                //Point intersectionCoordinates = new Point();
+                List<Line> lines = new List<Line>();
+                this.SegmentsViewModel.Segments.ForEach(x =>
+                {
+                    lines.Add(new Line(new Point(x.StartingPointX, x.StartingPointY),
+                        new Point(x.EndingPointX, x.EndingPointY)));
+
+                });
+                var inter = LineIntersection.Find(lines[0], lines[1]);
+                //this.Intersection = this.intersectionEngine.Intersection(GenerateEngineInput(), out intersectionCoordinates);
+                this.eventAggregator.GetEvent<EngineOutputSendEvent>().Publish(inter);
                 this.IsSweeperAvailable = true;
                 this.ButtonText = "Run";
             }

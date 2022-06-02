@@ -82,9 +82,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\BaseClasses\Line.cs" />
     <Compile Include="Common\Events\EngineOutputSendEvent.cs" />
     <Compile Include="Common\Events\IsSweeperRunnigEvent.cs" />
     <Compile Include="Common\Events\ViewModelSendEvent.cs" />
+    <Compile Include="Common\Extensions\DoubleExtensions.cs" />
     <Compile Include="Controls\CoordinateSystem\Converters\LinePointToEllipsePositionConverter.cs" />
     <Compile Include="IoCContainer.cs" />
     <Compile Include="Common\BaseClasses\ViewModelBase.cs" />
