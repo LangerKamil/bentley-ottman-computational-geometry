@@ -87,7 +87,10 @@
     <Compile Include="Common\Events\IsSweeperRunnigEvent.cs" />
     <Compile Include="Common\Events\ViewModelSendEvent.cs" />
     <Compile Include="Common\Extensions\DoubleExtensions.cs" />
+    <Compile Include="Common\Extensions\LineExtensions.cs" />
     <Compile Include="Controls\CoordinateSystem\Converters\LinePointToEllipsePositionConverter.cs" />
+    <Compile Include="Engines\Models\IntersectionEngineInput.cs" />
+    <Compile Include="Engines\Models\IntersectionEngineOutput.cs" />
     <Compile Include="IoCContainer.cs" />
     <Compile Include="Common\BaseClasses\ViewModelBase.cs" />
     <Compile Include="Common\Events\ParentUpdateEventArgs.cs" />

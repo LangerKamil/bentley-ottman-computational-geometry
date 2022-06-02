@@ -1,80 +1,24 @@
 ﻿using GeometriaObliczeniowa.Common.BaseClasses;
 using GeometriaObliczeniowa.Common.Extensions;
 using GeometriaObliczeniowa.Engines.Interface;
+using GeometriaObliczeniowa.Engines.Models;
 using System;
-using System.Collections.Generic;
 using System.Windows;
 
 namespace GeometriaObliczeniowa.Engines
 {
     public sealed class IntersectionEngine : IIntersectionEngine
     {
-        public string Intersection(IntersectionEngineInput input, out Point coordinates)
+        public IntersectionEngineOutput FindIntersection(IntersectionEngineInput input)
         {
-            double A1 = input.Line1End.Y - input.Line1Start.Y;
-            double B1 = input.Line1Start.X - input.Line1End.X;
-            double C1 = A1 * input.Line1Start.X + B1 * input.Line1Start.Y;
-
-            double A2 = input.Line2End.Y - input.Line2Start.Y;
-            double B2 = input.Line2Start.X - input.Line2End.X;
-            double C2 = A2 * input.Line2Start.X + B2 * input.Line2Start.Y;
-
-            double determinant = A1 * B2 - A2 * B1;
-
-            if (determinant == 0)
-            {
-                coordinates = new Point();
-                return "Lines are parallel!";
-            }
-
-            double X = (B2 * C1 - B1 * C2) / determinant;
-            double Y = (A1 * C2 - A2 * C1) / determinant;
-
-            if (X > 200 || X < -200 || Y > 200 || Y < -200)  // TODO: Handle lines not intersecting
-            {
-                coordinates = new Point(X, Y);
-                return "Lines do not intersect!";
-            }
-
-            coordinates = new Point(X, Y);
-            return $"Intersection at: X:{X},Y:{Y}";
-        }
-    }
-
-    public class IntersectionEngineInput
-    {
-        public Point Line1Start { get; set; }
-        public Point Line1End { get; set; }
-        public Point Line2Start { get; set; }
-        public Point Line2End { get; set; }
-
-        public IntersectionEngineInput(List<Point> coords)
-        {
-            Line1Start = coords[0];
-            Line1End = coords[1];
-            Line2Start = coords[2];
-            Line2End = coords[3];
-        }
-    }
-
-    public class LineIntersection
-    {
-        /// <summary>
-        ///  Returns Point of intersection if do intersect otherwise default Point (null).
-        /// </summary>
-        /// <param name="precision">precision tolerance.</param>
-        /// <returns>The point of intersection.</returns>
-        public static Point Find(Line lineA, Line lineB, int precision = 5)
-        {
-            var tolerance = Math.Round(Math.Pow(0.1, precision), precision);
-            return FindIntersection(lineA, lineB, tolerance);
+            return Calculate(input.LineA, input.LineB, input.CalculateTolerance());
         }
 
-        internal static Point FindIntersection(Line lineA, Line lineB, double tolerance)
+        internal static IntersectionEngineOutput Calculate(Line lineA, Line lineB, double tolerance)
         {
-            if (lineA == lineB)
+            ; if (lineA == lineB)
             {
-                throw new Exception("Both lines are the same.");
+                return new IntersectionEngineOutput(new Point(), "Both lines are the same.");
             }
 
             //make lineA as left
@@ -100,6 +44,16 @@ namespace GeometriaObliczeniowa.Engines
             double x3 = lineB.Left.X, y3 = lineB.Left.Y;
             double x4 = lineB.Right.X, y4 = lineB.Right.Y;
 
+            double AA1 = y2 - y1, BB1 = x1 - x2;
+            double AA2 = y4 - y3, BB2 = x3 - x4;
+
+            double determinant = AA1 * BB2 - AA2 * BB1;
+
+            //find parallel
+            if (determinant == 0)
+            {
+                return new IntersectionEngineOutput(new Point(), $"Lines are parallel!");
+            }
 
             //equations of the form x=c (two vertical overlapping lines)
             if (x1 == x2 && x3 == x4 && x1 == x3)
@@ -112,7 +66,7 @@ namespace GeometriaObliczeniowa.Engines
                 if (IsInsideLine(lineA, firstIntersection, tolerance) &&
                     IsInsideLine(lineB, firstIntersection, tolerance))
                 {
-                    return new Point(x3, y3);
+                    return new IntersectionEngineOutput(new Point(x3, y3), $"Intersects at x:{x3} y:{y3}");
                 }
             }
 
@@ -128,20 +82,20 @@ namespace GeometriaObliczeniowa.Engines
                 if (IsInsideLine(lineA, firstIntersection, tolerance) &&
                     IsInsideLine(lineB, firstIntersection, tolerance))
                 {
-                    return new Point(x3, y3);
+                    return new IntersectionEngineOutput(new Point(x3, y3), $"Intersects at x:{x3} y:{y3}");
                 }
             }
 
             //equations of the form x=c (two vertical lines)
             if (x1 == x2 && x3 == x4)
             {
-                return new Point();
+                return new IntersectionEngineOutput(new Point(), $"No intersection");
             }
 
             //equations of the form y=c (two horizontal lines)
             if (y1 == y2 && y3 == y4)
             {
-                return new Point();
+                return new IntersectionEngineOutput(new Point(), $"No intersection");
             }
 
             //general equation of line is y = mx + c where m is the slope
@@ -211,7 +165,7 @@ namespace GeometriaObliczeniowa.Engines
                 if (!(Math.Abs(-m1 * x + y - c1) < tolerance
                     && Math.Abs(-m2 * x + y - c2) < tolerance))
                 {
-                    return new Point();
+                    return new IntersectionEngineOutput(new Point(), $"No intersection");
                 }
             }
 
@@ -222,12 +176,11 @@ namespace GeometriaObliczeniowa.Engines
             if (IsInsideLine(lineA, result, tolerance) &&
                 IsInsideLine(lineB, result, tolerance))
             {
-                return result;
+                return new IntersectionEngineOutput(result, $"Intersects at x:{result.X} y:{result.Y}");
             }
 
             //return default null (no intersection)
-            return new Point();
-
+            return new IntersectionEngineOutput(new Point(), $"No intersection");
         }
 
         /// <summary>
@@ -249,31 +202,5 @@ namespace GeometriaObliczeniowa.Engines
                         || y.IsGreaterThanOrEqual(rightY, tolerance) && y.IsLessThanOrEqual(leftY, tolerance));
         }
 
-    }
-
-    /// <summary>
-    /// Line extensions.
-    /// </summary>
-    public static class LineExtensions
-    {
-        public static bool Intersects(this Line lineA, Line lineB, int precision = 5)
-        {
-            return LineIntersection.Find(lineA, lineB, precision) != null;
-        }
-
-        public static Point Intersection(this Line lineA, Line lineB, int precision = 5)
-        {
-            return LineIntersection.Find(lineA, lineB, precision);
-        }
-
-        internal static bool Intersects(this Line lineA, Line lineB, double tolerance)
-        {
-            return LineIntersection.FindIntersection(lineA, lineB, tolerance) != null;
-        }
-
-        internal static Point Intersection(this Line lineA, Line lineB, double tolerance)
-        {
-            return LineIntersection.FindIntersection(lineA, lineB, tolerance);
-        }
     }
 }

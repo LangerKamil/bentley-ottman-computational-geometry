@@ -1,14 +1,10 @@
 ﻿using GeometriaObliczeniowa.Common.BaseClasses;
 using GeometriaObliczeniowa.Common.Events;
-using GeometriaObliczeniowa.Common.Extensions;
-using GeometriaObliczeniowa.Engines;
 using GeometriaObliczeniowa.Engines.Interface;
+using GeometriaObliczeniowa.Engines.Models;
 using GeometriaObliczeniowa.Models;
 using Prism.Commands;
 using Prism.Events;
-using System;
-using System.Collections.Generic;
-using System.Windows;
 using System.Windows.Input;
 
 namespace GeometriaObliczeniowa.ViewModels
@@ -84,21 +80,14 @@ namespace GeometriaObliczeniowa.ViewModels
             this.eventAggregator.GetEvent<IsSweeperRunnigEvent>().Subscribe(OnSweeperStopped);
         }
 
-        private void OnSweeperStopped(bool obj)
+        private void OnSweeperStopped(bool isRunning)
         {
-            if (!obj)
+            if (!isRunning)
             {
-                //Point intersectionCoordinates = new Point();
-                List<Line> lines = new List<Line>();
-                this.SegmentsViewModel.Segments.ForEach(x =>
-                {
-                    lines.Add(new Line(new Point(x.StartingPointX, x.StartingPointY),
-                        new Point(x.EndingPointX, x.EndingPointY)));
-
-                });
-                var inter = LineIntersection.Find(lines[0], lines[1]);
-                //this.Intersection = this.intersectionEngine.Intersection(GenerateEngineInput(), out intersectionCoordinates);
-                this.eventAggregator.GetEvent<EngineOutputSendEvent>().Publish(inter);
+                IntersectionEngineOutput engineOutput = this.intersectionEngine.FindIntersection(
+                    new IntersectionEngineInput(this.SegmentsViewModel.Segments));
+                this.Intersection = engineOutput.GetOutput();
+                this.eventAggregator.GetEvent<EngineOutputSendEvent>().Publish(engineOutput.GetCoorinates());
                 this.IsSweeperAvailable = true;
                 this.ButtonText = "Run";
             }
@@ -119,22 +108,11 @@ namespace GeometriaObliczeniowa.ViewModels
 
         private void Execute()
         {
-            this.Intersection = String.Empty;
+            this.Intersection = "";
             this.IsSweeperAvailable = false;
             this.eventAggregator.GetEvent<IsSweeperRunnigEvent>().Publish(true);
             this.ButtonText = "Running";
 
-        }
-
-        private IntersectionEngineInput GenerateEngineInput()
-        {
-            List<Point> lineCoords = new List<Point>();
-            this.SegmentsViewModel.Segments.ForEach(x =>
-            {
-                lineCoords.Add(new Point(x.StartingPointX, x.StartingPointY));
-                lineCoords.Add(new Point(x.EndingPointX, x.EndingPointY));
-            });
-            return new IntersectionEngineInput(lineCoords);
         }
         #endregion
     }

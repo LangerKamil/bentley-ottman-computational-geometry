@@ -94,7 +94,7 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
         private void OnEngineOutputReceived(Point obj)
         {
             this.Intersection = obj;
-            this.IsIntersectionPointVisable = Visibility.Visible;
+            this.IsIntersectionPointVisable = (obj.X == 0 && obj.Y == 0) ? Visibility.Hidden : Visibility.Visible;
         }
 
         public override void Dispose()
