@@ -91,15 +91,20 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
             this.eventAggregator.GetEvent<EngineOutputSendEvent>().Subscribe(OnEngineOutputReceived);
         }
 
+        public override void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void StopSweeper()
+        {
+            this.IsSweeperRunning = false;
+        }
+
         private void OnEngineOutputReceived(Point obj)
         {
             this.Intersection = obj;
             this.IsIntersectionPointVisable = (obj.X == 0 && obj.Y == 0) ? Visibility.Hidden : Visibility.Visible;
-        }
-
-        public override void Dispose()
-        {
-            throw new NotImplementedException();
         }
 
         private void InitializeCommands()
@@ -143,11 +148,6 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
                 this.IsIntersectionPointVisable = Visibility.Hidden;
                 this.IsSweeperRunning = true;
             }
-        }
-
-        public void StopSweeper()
-        {
-            this.IsSweeperRunning = false;
         }
         #endregion
     }

@@ -5,14 +5,23 @@ namespace GeometriaObliczeniowa.Common.BaseClasses
 {
     public class Line
     {
+        #region Fields
+        private readonly Lazy<double> slope;
+        #endregion
+
+        #region Properties
         public Point Left { get; private set; }
+
         public Point Right { get; private set; }
 
         public bool IsVertical => Left.X == Right.X;
+
         public bool IsHorizontal => Left.Y == Right.Y;
 
         public double Slope => slope.Value;
+        #endregion
 
+        #region Constructors
         private Line()
         {
             slope = new Lazy<double>(() => calcSlope());
@@ -49,8 +58,9 @@ namespace GeometriaObliczeniowa.Common.BaseClasses
 
         public Line(Point start, Point end, int precision = 5)
             : this(start, end, Math.Round(Math.Pow(0.1, precision), precision)) { }
+        #endregion
 
-        private readonly Lazy<double> slope;
+        #region Methods
         private double calcSlope()
         {
             Point left = Left, right = Right;
@@ -63,5 +73,6 @@ namespace GeometriaObliczeniowa.Common.BaseClasses
 
             return ((right.Y - left.Y) / (right.X - left.X));
         }
+        #endregion
     }
 }
