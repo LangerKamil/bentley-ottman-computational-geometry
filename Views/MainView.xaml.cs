@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 namespace GeometriaObliczeniowa.Views
 {
@@ -8,6 +7,7 @@ namespace GeometriaObliczeniowa.Views
         public MainView()
         {
             InitializeComponent();
+
         }
     }
 }

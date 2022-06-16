@@ -5,7 +5,7 @@ namespace GeometriaObliczeniowa.Models
 {
     public sealed class SegmentsDTO : ObservableCollection<SegmentsDTO>
     {
-        #region Properties                                                      //TODO CHANGE TO DTO AND MAP WITH MODELS
+        #region Properties                                                     
         public List<SegmentDTO> Segments { get; set; }
         #endregion
 

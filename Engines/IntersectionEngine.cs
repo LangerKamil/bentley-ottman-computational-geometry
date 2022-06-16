@@ -49,53 +49,51 @@ namespace GeometriaObliczeniowa.Engines
 
             double determinant = AA1 * BB2 - AA2 * BB1;
 
-            //find parallel
-            if (determinant == 0)
-            {
-                return new IntersectionEngineOutput(new Point(), $"Lines are parallel!");
-            }
-
-            //equations of the form x=c (two vertical overlapping lines)
+            // ODCINKI NACHODZĄCE NA SIEBIE WERTYKALNIE
             if (x1 == x2 && x3 == x4 && x1 == x3)
             {
-                //get the first intersection in vertical sorted order of lines
+                // PUNKT PRZECIECIA ODCINKÓW ORAZ POCZĄTEK DRUGIEGO ODCINKA
                 var firstIntersection = new Point(x3, y3);
 
-                //x,y can intersect outside the line segment since line is infinitely long
-                //so finally check if x, y is within both the line segments
+                // CZY PUNKT ZNAJDUJE SIĘ MIĘDZY POCZĄTKIEM I KOŃCEM ODCIKÓW (NIESKOŃCZONOŚĆ)
+                // JEŚLI TAK, ZWRACA WIADOMOŚĆ O PRZECIĘCIU I WSPÓŁRZĘDNE
                 if (IsInsideLine(lineA, firstIntersection, tolerance) &&
                     IsInsideLine(lineB, firstIntersection, tolerance))
                 {
-                    return new IntersectionEngineOutput(new Point(x3, y3), $"Intersects at x:{x3} y:{y3}");
+                    // CZY JEDEN ODCINEK ZNAJDUJE SIĘ WEWNĄTRZ DRUGIEGO
+                    if (IsInsideLine(lineA, lineB.Right, tolerance))
+                    {
+                        return new IntersectionEngineOutput(new Point(x3, y3), $"TAK", new Line(new Point(x3, y3), new Point(x4, y4)));
+                    }
+                    return new IntersectionEngineOutput(new Point(x3, y3), $"TAK", new Line(new Point(x3, y3), new Point(x2, y2)));
                 }
             }
 
-            //equations of the form y=c (two overlapping horizontal lines)
+            // ODCINKI NACHODZĄCE NA SIEBIE HORYZONTALNIE
             if (y1 == y2 && y3 == y4 && y1 == y3)
             {
-                //get the first intersection in horizontal sorted order of lines
+                // PUNKT PRZECIECIA ODCINKÓW ORAZ POCZĄTEK DRUGIEGO ODCINKA
                 var firstIntersection = new Point(x3, y3);
 
-                //get the first intersection in sorted order
-                //x,y can intersect outside the line segment since line is infinitely long
-                //so finally check if x, y is within both the line segments
+                // CZY PUNKT ZNAJDUJE SIĘ MIĘDZY POCZĄTKIEM I KOŃCEM ODCIKÓW (NIESKOŃCZONOŚĆ)
+                // JEŚLI TAK, ZWRACA WIADOMOŚĆ O PRZECIĘCIU I WSPÓŁRZĘDNE
                 if (IsInsideLine(lineA, firstIntersection, tolerance) &&
                     IsInsideLine(lineB, firstIntersection, tolerance))
                 {
-                    return new IntersectionEngineOutput(new Point(x3, y3), $"Intersects at x:{x3} y:{y3}");
+                    // CZY JEDEN ODCINEK ZNAJDUJE SIĘ WEWNĄTRZ DRUGIEGO
+                    if (IsInsideLine(lineA, lineB.Right, tolerance))
+                    {
+                        return new IntersectionEngineOutput(new Point(x3, y3), $"TAK", new Line(new Point(x3, y3), new Point(x4, y4)));
+                    }
+                    return new IntersectionEngineOutput(new Point(x3, y3), $"TAK", new Line(new Point(x3, y3), new Point(x2, y2)));
                 }
             }
 
-            //equations of the form x=c (two vertical lines)
-            if (x1 == x2 && x3 == x4)
+            // CZY ODCINKI SĄ POŁOŻONE DOKŁADNIE W TYM SAMYM MIEJSCU NA OSIACH X,Y
+            // JEŚLI TAK, ZWRACA WIDOMOŚĆ O BRAKU PRZECIĘCIA
+            if ((x1 == x2 && x3 == x4) || (y1 == y2 && y3 == y4))
             {
-                return new IntersectionEngineOutput(new Point(), $"No intersection");
-            }
-
-            //equations of the form y=c (two horizontal lines)
-            if (y1 == y2 && y3 == y4)
-            {
-                return new IntersectionEngineOutput(new Point(), $"No intersection");
+                return new IntersectionEngineOutput(new Point(), $"NIE");
             }
 
             //general equation of line is y = mx + c where m is the slope
@@ -176,11 +174,11 @@ namespace GeometriaObliczeniowa.Engines
             if (IsInsideLine(lineA, result, tolerance) &&
                 IsInsideLine(lineB, result, tolerance))
             {
-                return new IntersectionEngineOutput(result, $"Intersects at x:{result.X} y:{result.Y}");
+                return new IntersectionEngineOutput(result, $"TAK");
             }
 
             //return default null (no intersection)
-            return new IntersectionEngineOutput(new Point(), $"No intersection");
+            return new IntersectionEngineOutput(new Point(), $"NIE");
         }
 
         /// <summary>

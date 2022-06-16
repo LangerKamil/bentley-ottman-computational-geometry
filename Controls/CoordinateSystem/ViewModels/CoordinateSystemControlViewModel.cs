@@ -8,7 +8,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
+using GeometriaObliczeniowa.Engines.Models;
 using Prism.Commands;
 
 namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
@@ -23,6 +25,8 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
         private bool isSweeperRunning;
         private Point intersection;
         private Visibility isIntersectionPointVisable;
+        private Visibility isCommonSegmentVisable;
+        private Line commonSegment;
 
         #endregion
 
@@ -56,6 +60,18 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
             get { return this.isIntersectionPointVisable; }
             set { SetProperty(ref this.isIntersectionPointVisable, value); }
         }
+
+        public Line CommonSegment
+        {
+            get { return this.commonSegment; }
+            set { SetProperty(ref this.commonSegment, value); }
+        }
+
+        public Visibility IsCommonSegmentVisable
+        {
+            get { return this.isCommonSegmentVisable; }
+            set { SetProperty(ref this.isCommonSegmentVisable, value); }
+        }
         #endregion
 
         #region Commands
@@ -80,6 +96,7 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
             this.IsSweeperRunning = false;
             this.Intersection = new Point(0, 0);
             this.IsIntersectionPointVisable = Visibility.Hidden;
+            this.IsCommonSegmentVisable = Visibility.Hidden;
         }
 
         public override void InitializeEvents()
@@ -101,10 +118,18 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
             this.IsSweeperRunning = false;
         }
 
-        private void OnEngineOutputReceived(Point obj)
+        private void OnEngineOutputReceived(IntersectionEngineOutput output)
         {
-            this.Intersection = obj;
-            this.IsIntersectionPointVisable = (obj.X == 0 && obj.Y == 0) ? Visibility.Hidden : Visibility.Visible;
+            if (output.GetCommonPart() == null)
+            {
+                this.Intersection = output.GetCoorinates();
+                this.IsIntersectionPointVisable = (output.GetCoorinates().X == 0 && output.GetCoorinates().Y == 0) ? Visibility.Hidden : Visibility.Visible;
+            }
+            else
+            {
+                this.CommonSegment = output.GetCommonPart();
+                this.IsCommonSegmentVisable = Visibility.Visible;
+            }
         }
 
         private void InitializeCommands()
@@ -146,6 +171,8 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
             if (shouldSweeperRun)
             {
                 this.IsIntersectionPointVisable = Visibility.Hidden;
+                this.IsCommonSegmentVisable = Visibility.Hidden;
+                this.CommonSegment = null;
                 this.IsSweeperRunning = true;
             }
         }
