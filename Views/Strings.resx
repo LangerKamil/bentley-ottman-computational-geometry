@@ -117,4 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Coordinates" xml:space="preserve">
+    <value>Współrzędne</value>
+  </data>
+  <data name="EndingXHeader" xml:space="preserve">
+    <value>Koniec X</value>
+  </data>
+  <data name="EndingYHeader" xml:space="preserve">
+    <value>Koniec Y</value>
+  </data>
+  <data name="IsIntersection" xml:space="preserve">
+    <value>Czy się przecinają</value>
+  </data>
+  <data name="SegmentHeader" xml:space="preserve">
+    <value>Odcinek</value>
+  </data>
+  <data name="StartingXHeader" xml:space="preserve">
+    <value>Początek X</value>
+  </data>
+  <data name="StartingYHeader" xml:space="preserve">
+    <value>Początek Y</value>
+  </data>
 </root>

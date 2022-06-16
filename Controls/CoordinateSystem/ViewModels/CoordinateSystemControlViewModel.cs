@@ -5,7 +5,6 @@ using GeometriaObliczeniowa.Engines.Models;
 using GeometriaObliczeniowa.ViewModels;
 using Prism.Commands;
 using Prism.Events;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;

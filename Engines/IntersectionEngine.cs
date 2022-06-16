@@ -4,6 +4,7 @@ using GeometriaObliczeniowa.Engines.Interface;
 using GeometriaObliczeniowa.Engines.Models;
 using System;
 using System.Windows;
+using GeometriaObliczeniowa.Common.Resources;
 
 namespace GeometriaObliczeniowa.Engines
 {
@@ -18,23 +19,19 @@ namespace GeometriaObliczeniowa.Engines
         {
             ; if (lineA == lineB)
             {
-                return new IntersectionEngineOutput(new Point(), "NIE");
+                return new IntersectionEngineOutput(new Point(), Strings.No);
             }
 
-            //make lineA as left
+            // SORTOWANE
             if (lineA.Left.X.CompareTo(lineB.Left.X) > 0)
             {
-                var tmp = lineA;
-                lineA = lineB;
-                lineB = tmp;
+                (lineA, lineB) = (lineB, lineA);
             }
             else if (lineA.Left.X.CompareTo(lineB.Left.X) == 0)
             {
                 if (lineA.Left.Y.CompareTo(lineB.Left.Y) > 0)
                 {
-                    var tmp = lineA;
-                    lineA = lineB;
-                    lineB = tmp;
+                    (lineA, lineB) = (lineB, lineA);
                 }
             }
 
@@ -62,25 +59,25 @@ namespace GeometriaObliczeniowa.Engines
                 // PIERWSZY PUNKT PRZECIECIA ODCINKÓW ORAZ POCZĄTEK DRUGIEGO ODCINKA (W KOLEJNOŚCI WERTYKALNEJ)
                 var firstIntersection = new Point(x3, y3);
 
-                // CZY PUNKT ZNAJDUJE SIĘ MIĘDZY POCZĄTKIEM I KOŃCEM ODCIKÓW (NIESKOŃCZONOŚĆ)
-                // JEŚLI TAK, ZWRACA WIADOMOŚĆ O PRZECIĘCIU I WSPÓŁRZĘDNE
+                // JEŚLI PUNKT ZNAJDUJE SIĘ MIĘDZY POCZĄTKIEM I KOŃCEM ODCIKÓW (NIESKOŃCZONOŚĆ)
+                // ZWRACA WSPÓŁRZĘDNE WEWNĘTRZNEGO ODCINKA
                 if (IsInsideLine(lineA, firstIntersection, tolerance) &&
                     IsInsideLine(lineB, firstIntersection, tolerance))
                 {
                     // CZY JEDEN ODCINEK ZNAJDUJE SIĘ WEWNĄTRZ DRUGIEGO
                     if (IsInsideLine(lineA, lineB.Right, tolerance))
                     {
-                        return new IntersectionEngineOutput(new Point(x3, y3), $"TAK", new Line(new Point(x3, y3), new Point(x4, y4)));
+                        return new IntersectionEngineOutput(new Point(x3, y3), Strings.Yes, new Line(new Point(x3, y3), new Point(x4, y4)));
                     }
-                    return new IntersectionEngineOutput(new Point(x3, y3), $"TAK", new Line(new Point(x3, y3), new Point(x2, y2)));
+                    return new IntersectionEngineOutput(new Point(x3, y3), Strings.Yes, new Line(new Point(x3, y3), new Point(x2, y2)));
                 }
             }
 
-            // CZY ODCINKI SĄ POŁOŻONE DOKŁADNIE W TYM SAMYM MIEJSCU NA OSIACH X,Y
-            // JEŚLI TAK, ZWRACA WIADOMOŚĆ O BRAKU PRZECIĘCIA
+            // JEŚLI ODCINKI SĄ POŁOŻONE DOKŁADNIE W TYM SAMYM MIEJSCU NA OSIACH X,Y
+            // ZWRACA WIADOMOŚĆ O BRAKU PRZECIĘCIA
             if ((x1 == x2 && x3 == x4) || (y1 == y2 && y3 == y4))
             {
-                return new IntersectionEngineOutput(new Point(), $"NIE");
+                return new IntersectionEngineOutput(new Point(), Strings.No);
             }
 
             double x, y;
@@ -121,11 +118,11 @@ namespace GeometriaObliczeniowa.Engines
             //(could be horizontal we can handle it with slope = 0)
             else
             {
-                //compute slope of line 1 (m1) and c2
+                // POCHYŁA PIERWSZEGO ODCINKA
                 double m1 = (y2 - y1) / (x2 - x1);
                 double c1 = -m1 * x1 + y1;
 
-                //compute slope of line 2 (m2) and c2
+                // POCHYŁA DRUGIEGO ODCINKA
                 double m2 = (y4 - y3) / (x4 - x3);
                 double c2 = -m2 * x3 + y3;
 
@@ -140,22 +137,22 @@ namespace GeometriaObliczeniowa.Engines
                 if (!(Math.Abs(-m1 * x + y - c1) < tolerance
                     && Math.Abs(-m2 * x + y - c2) < tolerance))
                 {
-                    return new IntersectionEngineOutput(new Point(x3, y3), $"TAK", new Line(new Point(x3, y3), new Point(x2, y2)));
+                    return new IntersectionEngineOutput(new Point(x3, y3), Strings.Yes, new Line(new Point(x3, y3), new Point(x2, y2)));
                 }
             }
 
             var result = new Point(x, y);
 
-            //x,y can intersect outside the line segment since line is infinitely long
-            //so finally check if x, y is within both the line segments
+            // JEŚLI PUNKT ZNAJDUJE SIĘ MIĘDZY POCZĄTKIEM I KOŃCEM ODCIKÓW (NIESKOŃCZONOŚĆ)
+            // ZWRACA JEGO WSPÓŁRZĘDNE
             if (IsInsideLine(lineA, result, tolerance) &&
                 IsInsideLine(lineB, result, tolerance))
             {
-                return new IntersectionEngineOutput(result, $"TAK");
+                return new IntersectionEngineOutput(result, Strings.Yes);
             }
 
-            //return default null (no intersection)
-            return new IntersectionEngineOutput(new Point(), $"NIE");
+            // BRAK PRZECIĘCIA
+            return new IntersectionEngineOutput(new Point(), Strings.No);
         }
 
         /// <summary>

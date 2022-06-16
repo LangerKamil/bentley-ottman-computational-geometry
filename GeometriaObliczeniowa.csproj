@@ -28,6 +28,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
+    <PublisherName>Kamil Langer</PublisherName>
     <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
@@ -254,6 +255,8 @@
     <Compile Include="Common\Events\IsSweeperRunnigEvent.cs" />
     <Compile Include="Common\Events\ViewModelSendEvent.cs" />
     <Compile Include="Common\Extensions\DoubleExtensions.cs" />
+    <Compile Include="Common\Extensions\EngineOutputStringExtensions.cs" />
+    <Compile Include="Common\Resources\Strings.cs" />
     <Compile Include="Controls\CoordinateSystem\Converters\LinePointToEllipsePositionConverter.cs" />
     <Compile Include="Engines\Models\IntersectionEngineInput.cs" />
     <Compile Include="Engines\Models\IntersectionEngineOutput.cs" />
@@ -272,6 +275,11 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\SegmentsViewModel.cs" />
     <Compile Include="ViewModels\SegmentViewModel.cs" />
+    <Compile Include="Views\Strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
     <Compile Include="Views\ValidationRules\DataGridCellValidationRules.cs" />
     <Page Include="Controls\CoordinateSystem\Views\CoordinateSystemControl.xaml">
       <SubType>Designer</SubType>
@@ -315,6 +323,10 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Strings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="GeometriaObliczeniowa_TemporaryKey.pfx" />
     <None Include="packages.config" />

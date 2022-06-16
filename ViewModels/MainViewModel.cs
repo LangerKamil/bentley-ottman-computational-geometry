@@ -1,13 +1,14 @@
 ﻿using GeometriaObliczeniowa.Common.BaseClasses;
 using GeometriaObliczeniowa.Common.Events;
+using GeometriaObliczeniowa.Common.Extensions;
+using GeometriaObliczeniowa.Common.Resources;
 using GeometriaObliczeniowa.Engines.Interface;
 using GeometriaObliczeniowa.Engines.Models;
 using GeometriaObliczeniowa.Models;
 using Prism.Commands;
 using Prism.Events;
-using System;
-using System.Windows;
 using System.Windows.Input;
+using static System.String;
 
 namespace GeometriaObliczeniowa.ViewModels
 {
@@ -69,8 +70,6 @@ namespace GeometriaObliczeniowa.ViewModels
             this.InitializeProperties();
             this.InitializeEvents();
             this.InitializeCommands();
-
-
         }
         #endregion
 
@@ -81,7 +80,7 @@ namespace GeometriaObliczeniowa.ViewModels
 
             this.SegmentsViewModel = new SegmentsViewModel(eventAggregator, new SegmentsDTO());
             this.IsSweeperAvailable = true;
-            this.ButtonText = "Run";
+            this.ButtonText = Strings.Run;
 
             base.InitializingProperties = false;
         }
@@ -94,8 +93,8 @@ namespace GeometriaObliczeniowa.ViewModels
 
         private void OnUpdateRequested(object sender, ParentUpdateEventArgs e)
         {
-            this.Intersection = "";
-            this.Coordinates = "";
+            this.Intersection = Empty;
+            this.Coordinates = Empty;
         }
 
         private void OnSweeperStopped(bool isRunning)
@@ -104,23 +103,11 @@ namespace GeometriaObliczeniowa.ViewModels
             {
                 IntersectionEngineOutput engineOutput = this.intersectionEngine.FindIntersection(
                     new IntersectionEngineInput(this.SegmentsViewModel.Segments));
-                Point result = engineOutput.GetCoorinates();
-                var line = engineOutput.GetCommonPart();
-                this.Intersection = engineOutput.GetOutput();
-
-                if (line != null)
-                {
-                    this.Coordinates =
-                        $"X: {Math.Round(line.Left.X)},Y: {Math.Round(line.Left.Y)} | X: {Math.Round(line.Right.X)}, Y: {Math.Round(line.Right.Y)}";
-                }
-                else
-                {
-                    this.Coordinates = this.Intersection == "TAK" ? $"X: {Math.Round(result.X)} Y: {Math.Round(result.Y)}" : "-";
-                }
-
+                this.Intersection = engineOutput.GetIntersectionOutputString();
+                this.Coordinates = engineOutput.GetCoordinatesOutputString();
                 this.eventAggregator.GetEvent<EngineOutputSendEvent>().Publish(engineOutput);
                 this.IsSweeperAvailable = true;
-                this.ButtonText = "Run";
+                this.ButtonText = Strings.Run;
             }
         }
 
@@ -139,11 +126,11 @@ namespace GeometriaObliczeniowa.ViewModels
 
         private void Execute()
         {
-            this.Intersection = "";
-            this.Coordinates = "";
+            this.Intersection = Empty;
+            this.Coordinates = Empty;
             this.IsSweeperAvailable = false;
             this.eventAggregator.GetEvent<IsSweeperRunnigEvent>().Publish(true);
-            this.ButtonText = "Running";
+            this.ButtonText = Strings.Sweeping;
         }
         #endregion
     }
