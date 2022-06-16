@@ -1,17 +1,16 @@
 ﻿using GeometriaObliczeniowa.Common.BaseClasses;
 using GeometriaObliczeniowa.Common.Events;
 using GeometriaObliczeniowa.Controls.CoordinateSystem.Models;
+using GeometriaObliczeniowa.Engines.Models;
 using GeometriaObliczeniowa.ViewModels;
+using Prism.Commands;
 using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Input;
-using GeometriaObliczeniowa.Engines.Models;
-using Prism.Commands;
 
 namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
 {
@@ -95,8 +94,7 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
             this.SegmentsViewModel = new ObservableCollection<SegmentsViewModel>();
             this.IsSweeperRunning = false;
             this.Intersection = new Point(0, 0);
-            this.IsIntersectionPointVisable = Visibility.Hidden;
-            this.IsCommonSegmentVisable = Visibility.Hidden;
+            this.HideIntersections();
         }
 
         public override void InitializeEvents()
@@ -110,7 +108,6 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
 
         public override void Dispose()
         {
-            throw new NotImplementedException();
         }
 
         public void StopSweeper()
@@ -163,6 +160,7 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
                 SegmentsViewModel segmentsViewModel = (SegmentsViewModel)viewModel;
                 this.SegmentsViewModel.Clear();
                 this.SegmentsViewModel.Add(segmentsViewModel);
+                this.HideIntersections();
             }
         }
 
@@ -170,11 +168,16 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
         {
             if (shouldSweeperRun)
             {
-                this.IsIntersectionPointVisable = Visibility.Hidden;
-                this.IsCommonSegmentVisable = Visibility.Hidden;
+                this.HideIntersections();
                 this.CommonSegment = null;
                 this.IsSweeperRunning = true;
             }
+        }
+
+        private void HideIntersections()
+        {
+            this.IsIntersectionPointVisable = Visibility.Hidden;
+            this.IsCommonSegmentVisable = Visibility.Hidden;
         }
         #endregion
     }
