@@ -89,6 +89,13 @@ namespace GeometriaObliczeniowa.ViewModels
         public override void InitializeEvents()
         {
             this.eventAggregator.GetEvent<IsSweeperRunnigEvent>().Subscribe(OnSweeperStopped);
+            this.SegmentsViewModel.ParentUpdateHandler += this.OnUpdateRequested;
+        }
+
+        private void OnUpdateRequested(object sender, ParentUpdateEventArgs e)
+        {
+            this.Intersection = "";
+            this.Coordinates = "";
         }
 
         private void OnSweeperStopped(bool isRunning)
@@ -137,7 +144,6 @@ namespace GeometriaObliczeniowa.ViewModels
             this.IsSweeperAvailable = false;
             this.eventAggregator.GetEvent<IsSweeperRunnigEvent>().Publish(true);
             this.ButtonText = "Running";
-
         }
         #endregion
     }

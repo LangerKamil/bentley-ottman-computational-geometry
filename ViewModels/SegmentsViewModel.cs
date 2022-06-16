@@ -10,7 +10,7 @@ using Prism.Events;
 
 namespace GeometriaObliczeniowa.ViewModels
 {
-    public sealed class SegmentsViewModel : ViewModelBase, IEditableObject
+    public sealed class SegmentsViewModel : ViewModelBase
     {
         #region Fields
         private ObservableCollection<SegmentViewModel> segments;
@@ -43,8 +43,8 @@ namespace GeometriaObliczeniowa.ViewModels
             base.InitializingProperties = true;
             this.Segments = new ObservableCollection<SegmentViewModel>()
             {
-                new SegmentViewModel(new SegmentDTO()),
-                new SegmentViewModel(new SegmentDTO())
+                new SegmentViewModel(new SegmentDTO()){ID = 1},
+                new SegmentViewModel(new SegmentDTO()){ID = 2}
             };
             base.InitializingProperties = false;
         }
@@ -120,17 +120,5 @@ namespace GeometriaObliczeniowa.ViewModels
                 }));
         }
         #endregion
-
-        public void BeginEdit()
-        {
-        }
-
-        public void EndEdit()
-        {
-        }
-
-        public void CancelEdit()
-        {
-        }
     }
 }

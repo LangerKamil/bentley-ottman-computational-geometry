@@ -18,7 +18,7 @@ namespace GeometriaObliczeniowa.Engines
         {
             ; if (lineA == lineB)
             {
-                return new IntersectionEngineOutput(new Point(), "Both lines are the same.");
+                return new IntersectionEngineOutput(new Point(), "NIE");
             }
 
             //make lineA as left
@@ -38,41 +38,28 @@ namespace GeometriaObliczeniowa.Engines
                 }
             }
 
+            // WSPÓŁRZĘDNE ODCINKA A
             double x1 = lineA.Left.X, y1 = lineA.Left.Y;
             double x2 = lineA.Right.X, y2 = lineA.Right.Y;
 
+            // WSPÓŁRZĘDNE ODCINKA B
             double x3 = lineB.Left.X, y3 = lineB.Left.Y;
             double x4 = lineB.Right.X, y4 = lineB.Right.Y;
 
-            double AA1 = y2 - y1, BB1 = x1 - x2;
-            double AA2 = y4 - y3, BB2 = x3 - x4;
+            // MACIERZ
+            double matX1 = x2 - x1, matY1 = y2 - y1;
+            double matX2 = x4 - x3, matY2 = y4 - y3;
+            double matX3 = x1 - x3, matY3 = y1 - y3;
 
-            double determinant = AA1 * BB2 - AA2 * BB1;
+            // WYZNACZNIK MACIERZY
+            double determinant = matX1 * matY2 - matX2 * matY1;
+            double determinant2 = matX1 * matY3 - matX3 * matY1;
+            double determinant3 = matX2 * matY3 - matX3 * matY2;
 
             // ODCINKI NACHODZĄCE NA SIEBIE WERTYKALNIE
-            if (x1 == x2 && x3 == x4 && x1 == x3)
+            if ((x1 == x2 && x3 == x4 && x1 == x3) || (y1 == y2 && y3 == y4 && y1 == y3))
             {
-                // PUNKT PRZECIECIA ODCINKÓW ORAZ POCZĄTEK DRUGIEGO ODCINKA
-                var firstIntersection = new Point(x3, y3);
-
-                // CZY PUNKT ZNAJDUJE SIĘ MIĘDZY POCZĄTKIEM I KOŃCEM ODCIKÓW (NIESKOŃCZONOŚĆ)
-                // JEŚLI TAK, ZWRACA WIADOMOŚĆ O PRZECIĘCIU I WSPÓŁRZĘDNE
-                if (IsInsideLine(lineA, firstIntersection, tolerance) &&
-                    IsInsideLine(lineB, firstIntersection, tolerance))
-                {
-                    // CZY JEDEN ODCINEK ZNAJDUJE SIĘ WEWNĄTRZ DRUGIEGO
-                    if (IsInsideLine(lineA, lineB.Right, tolerance))
-                    {
-                        return new IntersectionEngineOutput(new Point(x3, y3), $"TAK", new Line(new Point(x3, y3), new Point(x4, y4)));
-                    }
-                    return new IntersectionEngineOutput(new Point(x3, y3), $"TAK", new Line(new Point(x3, y3), new Point(x2, y2)));
-                }
-            }
-
-            // ODCINKI NACHODZĄCE NA SIEBIE HORYZONTALNIE
-            if (y1 == y2 && y3 == y4 && y1 == y3)
-            {
-                // PUNKT PRZECIECIA ODCINKÓW ORAZ POCZĄTEK DRUGIEGO ODCINKA
+                // PIERWSZY PUNKT PRZECIECIA ODCINKÓW ORAZ POCZĄTEK DRUGIEGO ODCINKA (W KOLEJNOŚCI WERTYKALNEJ)
                 var firstIntersection = new Point(x3, y3);
 
                 // CZY PUNKT ZNAJDUJE SIĘ MIĘDZY POCZĄTKIEM I KOŃCEM ODCIKÓW (NIESKOŃCZONOŚĆ)
@@ -90,21 +77,11 @@ namespace GeometriaObliczeniowa.Engines
             }
 
             // CZY ODCINKI SĄ POŁOŻONE DOKŁADNIE W TYM SAMYM MIEJSCU NA OSIACH X,Y
-            // JEŚLI TAK, ZWRACA WIDOMOŚĆ O BRAKU PRZECIĘCIA
+            // JEŚLI TAK, ZWRACA WIADOMOŚĆ O BRAKU PRZECIĘCIA
             if ((x1 == x2 && x3 == x4) || (y1 == y2 && y3 == y4))
             {
                 return new IntersectionEngineOutput(new Point(), $"NIE");
             }
-
-            //general equation of line is y = mx + c where m is the slope
-            //assume equation of line 1 as y1 = m1x1 + c1 
-            //=> -m1x1 + y1 = c1 ----(1)
-            //assume equation of line 2 as y2 = m2x2 + c2
-            //=> -m2x2 + y2 = c2 -----(2)
-            //if line 1 and 2 intersect then x1=x2=x and y1=y2=y where (x,y) is the intersection point
-            //so we will get below two equations 
-            //-m1x + y = c1 --------(3)
-            //-m2x + y = c2 --------(4)
 
             double x, y;
 
@@ -163,7 +140,7 @@ namespace GeometriaObliczeniowa.Engines
                 if (!(Math.Abs(-m1 * x + y - c1) < tolerance
                     && Math.Abs(-m2 * x + y - c2) < tolerance))
                 {
-                    return new IntersectionEngineOutput(new Point(), $"No intersection");
+                    return new IntersectionEngineOutput(new Point(x3, y3), $"TAK", new Line(new Point(x3, y3), new Point(x2, y2)));
                 }
             }
 

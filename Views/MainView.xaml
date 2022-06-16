@@ -10,6 +10,11 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="20">
+        <Grid.Resources>
+            <Style x:Key="Centering" TargetType="{x:Type TextBlock}">
+                <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+            </Style>
+        </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
@@ -46,9 +51,14 @@
                   ItemsSource="{Binding Path=SegmentsViewModel.Segments}"
                   AutoGenerateColumns="False"
                   CanUserSortColumns="False"
-                  CanUserReorderColumns="False">
+                  CanUserReorderColumns="False"
+                  x:Name="dataGrid">
+
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Odcinek" IsReadOnly="True">
+                <DataGridTextColumn Header="Odcinek" IsReadOnly="True" ElementStyle="{StaticResource Centering}">
+                    <DataGridTextColumn.Binding>
+                        <Binding Path="ID"/>
+                    </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Początek X">
                     <DataGridTextColumn.Binding>
@@ -98,7 +108,15 @@
                 </Style>
             </DataGrid.Resources>
         </DataGrid>
-        <TextBlock Grid.Column="2" Grid.Row="1" Text="Czy się przecina:" HorizontalAlignment="Right" Margin="40,10" VerticalAlignment="Bottom" FontSize="12" FontWeight="Bold"></TextBlock>
+
+        <TextBlock Grid.Column="2" 
+                   Grid.Row="1" 
+                   Text="Czy się przecinają:" 
+                   HorizontalAlignment="Right" 
+                   Margin="0,10,30,10" 
+                   VerticalAlignment="Bottom" 
+                   FontSize="12" 
+                   FontWeight="Bold"/>
         <Border Grid.Row="1" 
                 Grid.Column="2" 
                 Grid.ColumnSpan="2" 
@@ -114,8 +132,15 @@
                 <TextBlock Text="{Binding Intersection}" FontSize="14" FontWeight="Bold"></TextBlock>
             </StackPanel>
         </Border>
-        <TextBlock Grid.Column="2" Grid.Row="2" Text="Współrzędne:" HorizontalAlignment="Right" Margin="40,10" VerticalAlignment="Center" FontSize="12" FontWeight="Bold"></TextBlock>
 
+        <TextBlock Grid.Column="2" 
+                   Grid.Row="2" 
+                   Text="Współrzędne:" 
+                   HorizontalAlignment="Right" 
+                   Margin="40,10,30,10" 
+                   VerticalAlignment="Center" 
+                   FontSize="12" 
+                   FontWeight="Bold"/>
         <Border Grid.Row="2" 
                 Grid.Column="2" 
                 Grid.ColumnSpan="2" 

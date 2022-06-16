@@ -6,7 +6,7 @@ using GeometriaObliczeniowa.Models;
 
 namespace GeometriaObliczeniowa.ViewModels
 {
-    public sealed class SegmentViewModel : ViewModelBase, IEditableObject
+    public sealed class SegmentViewModel : ViewModelBase
     {
         #region Fields
         private readonly SegmentDTO segmentDTO;
@@ -17,6 +17,8 @@ namespace GeometriaObliczeniowa.ViewModels
         #endregion
 
         #region Properties
+        public int ID { get; set; }
+
         public double StartingPointX
         {
             get { return this.startingPointX; }
@@ -55,6 +57,10 @@ namespace GeometriaObliczeniowa.ViewModels
         public override void InitializeProperties()
         {
             base.InitializingProperties = true;
+            this.StartingPointX = 0;
+            this.StartingPointY = 0;
+            this.EndingPointX = 0;
+            this.EndingPointY = 0;
             base.InitializingProperties = false;
         }
 
@@ -104,19 +110,5 @@ namespace GeometriaObliczeniowa.ViewModels
         }
 
         #endregion
-
-        public void BeginEdit()
-        {
-        }
-
-        public void EndEdit()
-        {
-            return;
-        }
-
-        public void CancelEdit()
-        {
-            return;
-        }
     }
 }

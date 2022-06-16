@@ -7,7 +7,6 @@ namespace GeometriaObliczeniowa.Views
         public MainView()
         {
             InitializeComponent();
-
         }
     }
 }
