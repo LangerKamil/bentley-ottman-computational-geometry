@@ -16,8 +16,8 @@ namespace GeometriaObliczeniowa.Engines
         }
 
         internal static IntersectionEngineOutput Calculate(Line lineA, Line lineB, double tolerance)
-        {
-            ; if (lineA == lineB)
+        { 
+            if (lineA == lineB)
             {
                 return new IntersectionEngineOutput(new Point(), Strings.No);
             }
@@ -46,12 +46,9 @@ namespace GeometriaObliczeniowa.Engines
             // MACIERZ
             double matX1 = x2 - x1, matY1 = y2 - y1;
             double matX2 = x4 - x3, matY2 = y4 - y3;
-            double matX3 = x1 - x3, matY3 = y1 - y3;
 
             // WYZNACZNIK MACIERZY
             double determinant = matX1 * matY2 - matX2 * matY1;
-            double determinant2 = matX1 * matY3 - matX3 * matY1;
-            double determinant3 = matX2 * matY3 - matX3 * matY2;
 
             // ODCINKI NACHODZĄCE NA SIEBIE NA OSIACH X,Y
             if ((x1 == x2 && x3 == x4 && x1 == x3) || (y1 == y2 && y3 == y4 && y1 == y3))
@@ -82,40 +79,31 @@ namespace GeometriaObliczeniowa.Engines
 
             double x, y;
 
-            //lineA is vertical x1 = x2
-            //slope will be infinity
-            //so lets derive another solution
+            // JEŚLI ODCINEK A JEST POŁOŻONY NA OSI X I OBA ODCINKI NIE SĄ POCHYŁE
+            // ZWRACA PUNKT PRZECIĘCIA ZA POMOCĄ WZORU y=mx+b
             if (Math.Abs(x1 - x2) < tolerance)
             {
-                //compute slope of line 2 (m2) and c2
+                // WYLICZANIE POCHYŁEJ ODCINKA B ORAZ PUNKTU PRZECIĘCIA NA OSI Y
                 double m2 = (y4 - y3) / (x4 - x3);
                 double c2 = -m2 * x3 + y3;
 
-                //equation of vertical line is x = c
-                //if line 1 and 2 intersect then x1=c1=x
-                //subsitute x=x1 in (4) => -m2x1 + y = c2
-                // => y = c2 + m2x1 
                 x = x1;
                 y = c2 + m2 * x1;
             }
-            //lineB is vertical x3 = x4
-            //slope will be infinity
-            //so lets derive another solution
+
+            // JEŚLI ODCINEK B JEST POŁOŻONY NA OSI X I OBA ODCINKI NIE SĄ POCHYŁE
+            // ZWRACA PUNKT PRZECIĘCIA ZA POMOCĄ WZORU y=mx+b
             else if (Math.Abs(x3 - x4) < tolerance)
             {
-                //compute slope of line 1 (m1) and c2
+                // WYLICZANIE POCHYŁEJ ODCINKA A ORAZ PUNKTU PRZECIĘCIA NA OSI Y
                 double m1 = (y2 - y1) / (x2 - x1);
                 double c1 = -m1 * x1 + y1;
 
-                //equation of vertical line is x = c
-                //if line 1 and 2 intersect then x3=c3=x
-                //subsitute x=x3 in (3) => -m1x3 + y = c1
-                // => y = c1 + m1x3 
                 x = x3;
                 y = c1 + m1 * x3;
             }
-            //lineA and lineB are not vertical 
-            //(could be horizontal we can handle it with slope = 0)
+
+            // JEŚLI OBA ODCINKI SĄ POCHYŁE
             else
             {
                 // POCHYŁA PIERWSZEGO ODCINKA
@@ -126,14 +114,11 @@ namespace GeometriaObliczeniowa.Engines
                 double m2 = (y4 - y3) / (x4 - x3);
                 double c2 = -m2 * x3 + y3;
 
-                //solving equations (3) and (4) => x = (c1-c2)/(m2-m1)
-                //plugging x value in equation (4) => y = c2 + m2 * x
                 x = (c1 - c2) / (m2 - m1);
                 y = c2 + m2 * x;
 
-                //verify by plugging intersection point (x, y)
-                //in orginal equations (1) and (2) to see if they intersect
-                //otherwise x,y values will not be finite and will fail this check
+                // JEŚLI PUNKT ZNAJDUJE SIĘ MIĘDZY POCZĄTKIEM I KOŃCEM POCHYŁYCH ODCIKÓW 
+                // ZWRACA WSPÓŁRZĘDNE WEWNĘTRZNEGO ODCINKA
                 if (!(Math.Abs(-m1 * x + y - c1) < tolerance
                     && Math.Abs(-m2 * x + y - c2) < tolerance))
                 {
