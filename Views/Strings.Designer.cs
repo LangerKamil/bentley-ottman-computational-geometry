@@ -70,7 +70,7 @@ namespace GeometriaObliczeniowa.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Koniec X.
+        ///   Looks up a localized string similar to X2.
         /// </summary>
         public static string EndingXHeader {
             get {
@@ -79,7 +79,7 @@ namespace GeometriaObliczeniowa.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Koniec Y.
+        ///   Looks up a localized string similar to Y2.
         /// </summary>
         public static string EndingYHeader {
             get {
@@ -106,7 +106,7 @@ namespace GeometriaObliczeniowa.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Początek X.
+        ///   Looks up a localized string similar to X1.
         /// </summary>
         public static string StartingXHeader {
             get {
@@ -115,7 +115,7 @@ namespace GeometriaObliczeniowa.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Początek Y.
+        ///   Looks up a localized string similar to Y1.
         /// </summary>
         public static string StartingYHeader {
             get {

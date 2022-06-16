@@ -10,7 +10,7 @@ namespace GeometriaObliczeniowa.Engines.Models
 
         private readonly string output;
 
-        private readonly Line? commonPart;
+        private readonly Line commonPart;
         #endregion
 
         #region Constructors

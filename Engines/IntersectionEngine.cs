@@ -53,10 +53,10 @@ namespace GeometriaObliczeniowa.Engines
             double determinant2 = matX1 * matY3 - matX3 * matY1;
             double determinant3 = matX2 * matY3 - matX3 * matY2;
 
-            // ODCINKI NACHODZĄCE NA SIEBIE WERTYKALNIE
+            // ODCINKI NACHODZĄCE NA SIEBIE NA OSIACH X,Y
             if ((x1 == x2 && x3 == x4 && x1 == x3) || (y1 == y2 && y3 == y4 && y1 == y3))
             {
-                // PIERWSZY PUNKT PRZECIECIA ODCINKÓW ORAZ POCZĄTEK DRUGIEGO ODCINKA (W KOLEJNOŚCI WERTYKALNEJ)
+                // PIERWSZY PUNKT PRZECIECIA ODCINKÓW ORAZ POCZĄTEK DRUGIEGO ODCINKA
                 var firstIntersection = new Point(x3, y3);
 
                 // JEŚLI PUNKT ZNAJDUJE SIĘ MIĘDZY POCZĄTKIEM I KOŃCEM ODCIKÓW (NIESKOŃCZONOŚĆ)
@@ -74,7 +74,7 @@ namespace GeometriaObliczeniowa.Engines
             }
 
             // JEŚLI ODCINKI SĄ POŁOŻONE DOKŁADNIE W TYM SAMYM MIEJSCU NA OSIACH X,Y
-            // ZWRACA WIADOMOŚĆ O BRAKU PRZECIĘCIA
+            // ZWRACA BRAK PRZECIĘCIA
             if ((x1 == x2 && x3 == x4) || (y1 == y2 && y3 == y4))
             {
                 return new IntersectionEngineOutput(new Point(), Strings.No);

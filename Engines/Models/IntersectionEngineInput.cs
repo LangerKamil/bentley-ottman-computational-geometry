@@ -1,5 +1,4 @@
-﻿
-using GeometriaObliczeniowa.Common.BaseClasses;
+﻿using GeometriaObliczeniowa.Common.BaseClasses;
 using GeometriaObliczeniowa.Common.Extensions;
 using GeometriaObliczeniowa.ViewModels;
 using System;

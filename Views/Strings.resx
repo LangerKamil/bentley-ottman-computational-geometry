@@ -121,10 +121,10 @@
     <value>Współrzędne</value>
   </data>
   <data name="EndingXHeader" xml:space="preserve">
-    <value>Koniec X</value>
+    <value>X2</value>
   </data>
   <data name="EndingYHeader" xml:space="preserve">
-    <value>Koniec Y</value>
+    <value>Y2</value>
   </data>
   <data name="IsIntersection" xml:space="preserve">
     <value>Czy się przecinają</value>
@@ -133,9 +133,9 @@
     <value>Odcinek</value>
   </data>
   <data name="StartingXHeader" xml:space="preserve">
-    <value>Początek X</value>
+    <value>X1</value>
   </data>
   <data name="StartingYHeader" xml:space="preserve">
-    <value>Początek Y</value>
+    <value>Y1</value>
   </data>
 </root>
