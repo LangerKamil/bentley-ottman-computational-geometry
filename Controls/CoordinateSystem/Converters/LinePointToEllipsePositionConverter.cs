@@ -4,7 +4,7 @@ using System.Windows.Data;
 
 namespace GeometriaObliczeniowa.Controls.CoordinateSystem.Converters
 {
-    public class LinePointToEllipsePositionConverter : IValueConverter
+    public sealed class LinePointToEllipsePositionConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

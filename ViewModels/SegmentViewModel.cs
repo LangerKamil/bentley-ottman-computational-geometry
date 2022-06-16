@@ -6,7 +6,7 @@ using GeometriaObliczeniowa.Models;
 
 namespace GeometriaObliczeniowa.ViewModels
 {
-    public sealed class SegmentViewModel : ViewModelBase
+    public sealed class SegmentViewModel : ViewModelBase, IEditableObject
     {
         #region Fields
         private readonly SegmentDTO segmentDTO;
@@ -99,9 +99,24 @@ namespace GeometriaObliczeniowa.ViewModels
 
             changedProperties.Add(e.PropertyName);
             this.UpdateBaseModel();
+
             return changedProperties;
         }
 
         #endregion
+
+        public void BeginEdit()
+        {
+        }
+
+        public void EndEdit()
+        {
+            return;
+        }
+
+        public void CancelEdit()
+        {
+            return;
+        }
     }
 }

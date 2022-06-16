@@ -6,6 +6,7 @@
              mc:Ignorable="d"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:views="clr-namespace:GeometriaObliczeniowa.Controls.CoordinateSystem.Views"
+             xmlns:validationRules="clr-namespace:GeometriaObliczeniowa.Views.ValidationRules"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="20">
@@ -20,15 +21,18 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <views:CoordinateSystemControl Grid.Column="0" 
-                                                         Grid.ColumnSpan="2" 
-                                                         Grid.Row="0" 
-                                                         Grid.RowSpan="4" 
-                                                         Background="#fdf8f1"
-                                                         BorderThickness="1"
-                                                         BorderBrush="Black"/>
+                                     Grid.ColumnSpan="2" 
+                                     Grid.Row="0" 
+                                     Grid.RowSpan="6" 
+                                     Background="#fdf8f1"
+                                     BorderThickness="1"
+                                     BorderBrush="Black"
+                                     LayoutTransform="1,0,0 -1,0,0"/>
         <DataGrid Grid.Column="2" 
                   Grid.ColumnSpan="2" 
                   Grid.Row="0" 
@@ -44,10 +48,44 @@
                   CanUserSortColumns="False"
                   CanUserReorderColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Starting X" Binding="{Binding Path=StartingPointX, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="Starting Y" Binding="{Binding Path=StartingPointY, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="Ending X" Binding="{Binding Path=EndingPointX, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"/>
-                <DataGridTextColumn Header="Ending Y" Binding="{Binding Path=EndingPointY, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"/>
+                <DataGridTextColumn Header="Odcinek" IsReadOnly="True">
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Początek X">
+                    <DataGridTextColumn.Binding>
+                        <Binding Path="StartingPointX" UpdateSourceTrigger="LostFocus" Mode="TwoWay" ValidatesOnDataErrors="True">
+                            <Binding.ValidationRules>
+                                <validationRules:DataGridCellValidationRules/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Początek Y">
+                    <DataGridTextColumn.Binding>
+                        <Binding Path="StartingPointY" UpdateSourceTrigger="LostFocus" Mode="TwoWay" ValidatesOnDataErrors="True">
+                            <Binding.ValidationRules>
+                                <validationRules:DataGridCellValidationRules/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Koniec X" >
+                    <DataGridTextColumn.Binding>
+                        <Binding Path="EndingPointX" UpdateSourceTrigger="LostFocus" Mode="TwoWay" ValidatesOnDataErrors="True">
+                            <Binding.ValidationRules>
+                                <validationRules:DataGridCellValidationRules/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Koniec Y">
+                    <DataGridTextColumn.Binding>
+                        <Binding Path="EndingPointY" UpdateSourceTrigger="LostFocus" Mode="TwoWay" ValidatesOnDataErrors="True">
+                            <Binding.ValidationRules>
+                                <validationRules:DataGridCellValidationRules/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
             </DataGrid.Columns>
             <DataGrid.Resources>
                 <Style TargetType="{x:Type DataGridColumnHeader}">
@@ -60,11 +98,44 @@
                 </Style>
             </DataGrid.Resources>
         </DataGrid>
+        <TextBlock Grid.Column="2" Grid.Row="1" Text="Czy się przecina:" HorizontalAlignment="Right" Margin="40,10" VerticalAlignment="Bottom" FontSize="12" FontWeight="Bold"></TextBlock>
+        <Border Grid.Row="1" 
+                Grid.Column="2" 
+                Grid.ColumnSpan="2" 
+                BorderBrush="Black" 
+                BorderThickness="1" 
+                Background="AliceBlue" 
+                Padding="5" 
+                Width="Auto"
+                MinWidth="200"
+                VerticalAlignment="Bottom" 
+                HorizontalAlignment="Right">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="{Binding Intersection}" FontSize="14" FontWeight="Bold"></TextBlock>
+            </StackPanel>
+        </Border>
+        <TextBlock Grid.Column="2" Grid.Row="2" Text="Współrzędne:" HorizontalAlignment="Right" Margin="40,10" VerticalAlignment="Center" FontSize="12" FontWeight="Bold"></TextBlock>
 
-        <Button Grid.Row="4" Grid.Column="4" Width="100" Height="40" 
+        <Border Grid.Row="2" 
+                Grid.Column="2" 
+                Grid.ColumnSpan="2" 
+                BorderBrush="Black" 
+                BorderThickness="1" 
+                Background="AliceBlue" 
+                Padding="5" 
+                Width="Auto"
+                MinWidth="200"
+                VerticalAlignment="Center" 
+                HorizontalAlignment="Right">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="{Binding Coordinates}" FontSize="14" FontWeight="Bold"></TextBlock>
+            </StackPanel>
+        </Border>
+
+        <Button Grid.Row="5" Grid.Column="3" Width="100" Height="40" 
                 Command="{Binding RunSweeperCommand}" 
                 IsEnabled="{Binding IsSweeperAvailable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                Margin="70,40,0,0">
+                Margin="70,10,0,0">
             <TextBlock Text="{Binding Path=ButtonText}" FontWeight="Bold"></TextBlock>
         </Button>
     </Grid>

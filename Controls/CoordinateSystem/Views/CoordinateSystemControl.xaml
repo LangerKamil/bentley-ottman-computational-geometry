@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:prism="http://prismlibrary.com/"
              xmlns:generalViewModels="clr-namespace:GeometriaObliczeniowa.ViewModels"
+             xmlns:local="clr-namespace:GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels"
              xmlns:converters="clr-namespace:GeometriaObliczeniowa.Controls.CoordinateSystem.Converters"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
@@ -13,7 +14,7 @@
         <converters:LinePointToEllipsePositionConverter x:Key="LinePointToEllipsePositionConverter"/>
 
         <Storyboard x:Key="SweeperAnimation">
-            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" From="0" To="328" Duration="00:00:05.000" Completed="Timeline_OnCompleted">
+            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" From="330" To="0" Duration="00:00:05.000" Completed="Timeline_OnCompleted">
                 <DoubleAnimation.EasingFunction>
                     <CubicEase EasingMode="EaseInOut"/>
                 </DoubleAnimation.EasingFunction>
@@ -21,14 +22,13 @@
         </Storyboard>
     </UserControl.Resources>
     <Grid>
-        <ItemsControl ItemsSource="{Binding SegmentsViewModel}">
+        <ItemsControl ItemsSource="{Binding SegmentsViewModel}" x:Name="ItemsControl">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas x:Name="coordinateSystemControl" 
                                     Background="#fdf8f1"
                                     HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    RenderTransform="1 0 0 1 0 0">
+                                    VerticalAlignment="Center">
                     </Canvas>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
@@ -40,8 +40,7 @@
                                 <Canvas x:Name="coordinateSystemControl" 
                                     Background="#fdf8f1"
                                     HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    RenderTransform="1 0 0 1 0 0">
+                                    VerticalAlignment="Center">
                                 </Canvas>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
@@ -55,9 +54,31 @@
                                       Stroke="Black"
                                       StrokeThickness="3"/>
                                     <Ellipse Fill="Black" Width="10" Height="10" Canvas.Left="{Binding StartingPointX, Converter={StaticResource LinePointToEllipsePositionConverter}}" 
-                                             Canvas.Top="{Binding StartingPointY, Converter={StaticResource LinePointToEllipsePositionConverter}}"/>
+                                             Canvas.Top="{Binding StartingPointY, Converter={StaticResource LinePointToEllipsePositionConverter}}" x:Name="StartingPoint"/>
                                     <Ellipse Fill="Black" Width="10" Height="10" Canvas.Left="{Binding  EndingPointX, Converter={StaticResource LinePointToEllipsePositionConverter}}" 
-                                             Canvas.Top="{Binding EndingPointY, Converter={StaticResource LinePointToEllipsePositionConverter}}"/>
+                                             Canvas.Top="{Binding EndingPointY, Converter={StaticResource LinePointToEllipsePositionConverter}}" x:Name="EndingPoint"/>
+
+                                    <!--INTERSECTION POINT-->
+                                    <Ellipse DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=1},Path=DataContext}" 
+                                             Fill="Red" Width="10" Height="10" Canvas.Left="{Binding Intersection.X, Converter={StaticResource LinePointToEllipsePositionConverter}}" 
+                                             Canvas.Top="{Binding Intersection.Y, Converter={StaticResource LinePointToEllipsePositionConverter}}" Visibility="{Binding IsIntersectionPointVisable}" />
+
+                                    <!--COMMON SEGMENT-->
+                                    <Ellipse DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=1},Path=DataContext}" 
+                                             Fill="Red" Width="10" Height="10" Canvas.Left="{Binding CommonSegment.Left.X, Converter={StaticResource LinePointToEllipsePositionConverter}}" 
+                                             Canvas.Top="{Binding CommonSegment.Left.Y, Converter={StaticResource LinePointToEllipsePositionConverter}}" Visibility="{Binding IsCommonSegmentVisable}" />
+                                    <Line DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=1},Path=DataContext}"
+                                          Stroke="Red"
+                                          StrokeThickness="3"
+                                          Canvas.ZIndex="3"
+                                          X1="{Binding CommonSegment.Left.X}" 
+                                          X2="{Binding CommonSegment.Right.X}" 
+                                          Y1="{Binding CommonSegment.Left.Y}" 
+                                          Y2="{Binding CommonSegment.Right.Y}"
+                                          Visibility="{Binding IsCommonSegmentVisable}"/>
+                                    <Ellipse DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=1},Path=DataContext}" 
+                                             Fill="Red" Width="10" Height="10" Canvas.Left="{Binding CommonSegment.Right.X, Converter={StaticResource LinePointToEllipsePositionConverter}}" 
+                                             Canvas.Top="{Binding CommonSegment.Right.Y, Converter={StaticResource LinePointToEllipsePositionConverter}}" Visibility="{Binding IsCommonSegmentVisable}" />
                                 </Canvas>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -66,28 +87,45 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
+        <!--Coordinate Axes-->
         <Line X1="800" X2="0" Y1="0" Y2="0" 
               Stroke="{Binding CoordinateSystemElements.Stroke}" 
               StrokeThickness="{Binding CoordinateSystemElements.StrokeThickness}" 
               VerticalAlignment="Center" 
               Canvas.ZIndex="-1"/>
-
         <Line X1="0" X2="0" Y1="800" Y2="0" 
               Stroke="{Binding CoordinateSystemElements.Stroke}" 
               StrokeThickness="{Binding CoordinateSystemElements.StrokeThickness}" 
               HorizontalAlignment="Center" 
+              Canvas.ZIndex="-1"
+              x:Name="Line"/>
+
+        <!--Metric Lines-->
+        <Line X1="786" X2="0" Y1="5" Y2="5" 
+              Stroke="{Binding CoordinateSystemElements.Stroke}" 
+              StrokeThickness="10" 
+              StrokeDashArray="0.2,0.8"
+              VerticalAlignment="Center" 
+              Canvas.ZIndex="-1"/>
+        <Line X1="5" X2="5" Y1="786" Y2="0" 
+              Stroke="{Binding CoordinateSystemElements.Stroke}" 
+              StrokeThickness="10" 
+              HorizontalAlignment="Center"
+              StrokeDashArray="0.2,0.8"
               Canvas.ZIndex="-1"/>
 
-        <Line X1="800" X2="0" Y1="0" Y2="0" 
+
+        <!--Sweeper-->
+        <Rectangle Width="400"
               Stroke="Red" 
               StrokeThickness="3" 
               VerticalAlignment="top" 
               Canvas.ZIndex="-1"
-              RenderTransformOrigin="1,0.5">
-            <Line.RenderTransform>
-                <TranslateTransform/>
-            </Line.RenderTransform>
-            <Line.Style>
+              x:Name="Sweeper">
+            <Rectangle.RenderTransform>
+                <TranslateTransform Y="330"/>
+            </Rectangle.RenderTransform>
+            <Rectangle.Style>
                 <Style>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsSweeperRunning}" Value="True">
@@ -98,10 +136,10 @@
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </Line.Style>
-        </Line>
+            </Rectangle.Style>
+        </Rectangle>
 
-        <TextBlock Text="X" FontWeight="Bold" FontSize="15" FontStyle="Italic"  VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,20,10,0" Panel.ZIndex="3"></TextBlock>
-        <TextBlock Text="Y" FontWeight="Bold" FontSize="15" FontStyle="Italic"  VerticalAlignment="Top" HorizontalAlignment="Center" Margin="20,5,0,0" Panel.ZIndex="3"></TextBlock>
+        <TextBlock Text="X" FontWeight="Bold" FontSize="15" FontStyle="Italic"  VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,20,10,0" Panel.ZIndex="3" RenderTransform="1,0,0 -1,0,0"></TextBlock>
+        <TextBlock Text="Y" FontWeight="Bold" FontSize="15" FontStyle="Italic"  VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="20,0,0,-15" Panel.ZIndex="3" RenderTransform="1,0,0 -1,0,0"></TextBlock>
     </Grid>
 </UserControl>

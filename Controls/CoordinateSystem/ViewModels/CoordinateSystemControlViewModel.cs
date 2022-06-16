@@ -7,12 +7,15 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
+using GeometriaObliczeniowa.Engines.Models;
 using Prism.Commands;
 
 namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
 {
-    public class CoordinateSystemControlViewModel : ViewModelBase
+    public sealed class CoordinateSystemControlViewModel : ViewModelBase
     {
 
         #region Fields
@@ -20,6 +23,11 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
         private CoordinateSystemElements coordinateSystemElements;
         private ObservableCollection<SegmentsViewModel> segmentsViewModel;
         private bool isSweeperRunning;
+        private Point intersection;
+        private Visibility isIntersectionPointVisable;
+        private Visibility isCommonSegmentVisable;
+        private Line commonSegment;
+
         #endregion
 
         #region Properties
@@ -39,6 +47,30 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
         {
             get { return isSweeperRunning; }
             set { SetProperty(ref isSweeperRunning, value); }
+        }
+
+        public Point Intersection
+        {
+            get { return this.intersection; }
+            set { SetProperty(ref this.intersection, value); }
+        }
+
+        public Visibility IsIntersectionPointVisable
+        {
+            get { return this.isIntersectionPointVisable; }
+            set { SetProperty(ref this.isIntersectionPointVisable, value); }
+        }
+
+        public Line CommonSegment
+        {
+            get { return this.commonSegment; }
+            set { SetProperty(ref this.commonSegment, value); }
+        }
+
+        public Visibility IsCommonSegmentVisable
+        {
+            get { return this.isCommonSegmentVisable; }
+            set { SetProperty(ref this.isCommonSegmentVisable, value); }
         }
         #endregion
 
@@ -62,6 +94,9 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
             this.CoordinateSystemElements = new CoordinateSystemElements();
             this.SegmentsViewModel = new ObservableCollection<SegmentsViewModel>();
             this.IsSweeperRunning = false;
+            this.Intersection = new Point(0, 0);
+            this.IsIntersectionPointVisable = Visibility.Hidden;
+            this.IsCommonSegmentVisable = Visibility.Hidden;
         }
 
         public override void InitializeEvents()
@@ -70,11 +105,31 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
             this.HandlePropertyChangedMethod += this.OnHandlePropertyChanged;
             this.eventAggregator.GetEvent<ViewModelSendEvent>().Subscribe(OnViewModelReceived);
             this.eventAggregator.GetEvent<IsSweeperRunnigEvent>().Subscribe(RunSweeper);
+            this.eventAggregator.GetEvent<EngineOutputSendEvent>().Subscribe(OnEngineOutputReceived);
         }
 
         public override void Dispose()
         {
             throw new NotImplementedException();
+        }
+
+        public void StopSweeper()
+        {
+            this.IsSweeperRunning = false;
+        }
+
+        private void OnEngineOutputReceived(IntersectionEngineOutput output)
+        {
+            if (output.GetCommonPart() == null)
+            {
+                this.Intersection = output.GetCoorinates();
+                this.IsIntersectionPointVisable = (output.GetCoorinates().X == 0 && output.GetCoorinates().Y == 0) ? Visibility.Hidden : Visibility.Visible;
+            }
+            else
+            {
+                this.CommonSegment = output.GetCommonPart();
+                this.IsCommonSegmentVisable = Visibility.Visible;
+            }
         }
 
         private void InitializeCommands()
@@ -115,13 +170,11 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
         {
             if (shouldSweeperRun)
             {
+                this.IsIntersectionPointVisable = Visibility.Hidden;
+                this.IsCommonSegmentVisable = Visibility.Hidden;
+                this.CommonSegment = null;
                 this.IsSweeperRunning = true;
             }
-        }
-
-        public void StopSweeper()
-        {
-            this.IsSweeperRunning = false;
         }
         #endregion
     }

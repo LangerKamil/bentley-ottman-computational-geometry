@@ -8,7 +8,7 @@ using Prism.Events;
 
 namespace GeometriaObliczeniowa
 {
-    public class IoCContainer : PrismBootstrapper
+    public sealed class IoCContainer : PrismBootstrapper
     {
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
