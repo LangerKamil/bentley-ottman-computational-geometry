@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
+using GeometriaObliczeniowa.Common.Resources;
 
 namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
 {
@@ -31,44 +32,44 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
         #region Properties
         public ObservableCollection<SegmentsViewModel> SegmentsViewModel
         {
-            get { return this.segmentsViewModel; }
-            set { SetProperty(ref this.segmentsViewModel, value); }
+            get => this.segmentsViewModel;
+            set => SetProperty(ref this.segmentsViewModel, value);
         }
 
         public CoordinateSystemElements CoordinateSystemElements
         {
-            get { return this.coordinateSystemElements; }
-            set { SetProperty(ref this.coordinateSystemElements, value); }
+            get => this.coordinateSystemElements;
+            set => SetProperty(ref this.coordinateSystemElements, value);
         }
 
         public bool IsSweeperRunning
         {
-            get { return isSweeperRunning; }
-            set { SetProperty(ref isSweeperRunning, value); }
+            get => isSweeperRunning;
+            set => SetProperty(ref isSweeperRunning, value);
         }
 
         public Point Intersection
         {
-            get { return this.intersection; }
-            set { SetProperty(ref this.intersection, value); }
+            get => this.intersection;
+            set => SetProperty(ref this.intersection, value);
         }
 
         public Visibility IsIntersectionPointVisable
         {
-            get { return this.isIntersectionPointVisable; }
-            set { SetProperty(ref this.isIntersectionPointVisable, value); }
+            get => this.isIntersectionPointVisable;
+            set => SetProperty(ref this.isIntersectionPointVisable, value);
         }
 
         public Line CommonSegment
         {
-            get { return this.commonSegment; }
-            set { SetProperty(ref this.commonSegment, value); }
+            get => this.commonSegment;
+            set => SetProperty(ref this.commonSegment, value);
         }
 
         public Visibility IsCommonSegmentVisable
         {
-            get { return this.isCommonSegmentVisable; }
-            set { SetProperty(ref this.isCommonSegmentVisable, value); }
+            get => this.isCommonSegmentVisable;
+            set => SetProperty(ref this.isCommonSegmentVisable, value);
         }
         #endregion
 
@@ -119,7 +120,7 @@ namespace GeometriaObliczeniowa.Controls.CoordinateSystem.ViewModels
             if (output.GetCommonPart() == null)
             {
                 this.Intersection = output.GetCoorinates();
-                this.IsIntersectionPointVisable = (output.GetCoorinates().X == 0 && output.GetCoorinates().Y == 0) ? Visibility.Hidden : Visibility.Visible;
+                this.IsIntersectionPointVisable = output.GetOutput() == Strings.No ? Visibility.Hidden : Visibility.Visible;
             }
             else
             {

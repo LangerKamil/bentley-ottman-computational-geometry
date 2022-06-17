@@ -21,26 +21,26 @@ namespace GeometriaObliczeniowa.ViewModels
 
         public double StartingPointX
         {
-            get { return this.startingPointX; }
-            set { SetProperty(ref this.startingPointX, value); }
+            get => this.startingPointX;
+            set => SetProperty(ref this.startingPointX, value);
         }
 
         public double StartingPointY
         {
-            get { return this.startingPointY; }
-            set { SetProperty(ref this.startingPointY, value); }
+            get => this.startingPointY;
+            set => SetProperty(ref this.startingPointY, value);
         }
 
         public double EndingPointX
         {
-            get { return this.endingPointX; }
-            set { SetProperty(ref this.endingPointX, value); }
+            get => this.endingPointX;
+            set => SetProperty(ref this.endingPointX, value);
         }
 
         public double EndingPointY
         {
-            get { return this.endingPointY; }
-            set { SetProperty(ref this.endingPointY, value); }
+            get => this.endingPointY;
+            set => SetProperty(ref this.endingPointY, value);
         }
         #endregion
 

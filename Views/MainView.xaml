@@ -176,7 +176,8 @@
 
         <Button Grid.Row="5" Grid.Column="3" Width="100" Height="40" 
                 Command="{Binding RunSweeperCommand}" 
-                IsEnabled="{Binding IsSweeperAvailable, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                IsEnabled="{Binding IsSweeperAvailable, UpdateSourceTrigger=PropertyChanged}"
+                Visibility="{Binding IsButtonVisable, UpdateSourceTrigger=PropertyChanged}"
                 Margin="70,10,0,0">
             <TextBlock Text="{Binding Path=ButtonText}" FontWeight="Bold"></TextBlock>
         </Button>

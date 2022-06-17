@@ -21,8 +21,8 @@ namespace GeometriaObliczeniowa.ViewModels
         #region Properties
         public ObservableCollection<SegmentViewModel> Segments
         {
-            get { return this.segments; }
-            set { SetProperty(ref this.segments, value); }
+            get => this.segments;
+            set => SetProperty(ref this.segments, value);
         }
         #endregion
 

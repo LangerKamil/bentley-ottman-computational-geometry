@@ -1,4 +1,5 @@
-﻿using GeometriaObliczeniowa.Common.BaseClasses;
+﻿using System.ComponentModel;
+using GeometriaObliczeniowa.Common.BaseClasses;
 using GeometriaObliczeniowa.Common.Events;
 using GeometriaObliczeniowa.Common.Extensions;
 using GeometriaObliczeniowa.Common.Resources;
@@ -8,15 +9,17 @@ using GeometriaObliczeniowa.Models;
 using Prism.Commands;
 using Prism.Events;
 using System.Linq;
+using System.Threading;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 using static System.String;
 
 namespace GeometriaObliczeniowa.ViewModels
 {
     public sealed class MainViewModel : ViewModelBase
     {
-
         #region Fields
         private readonly IEventAggregator eventAggregator;
         private readonly IIntersectionEngine intersectionEngine;
@@ -25,6 +28,9 @@ namespace GeometriaObliczeniowa.ViewModels
         private string buttonText;
         private string intersection;
         private string coordinates;
+        private readonly BackgroundWorker backgroundWorker;
+        private Visibility isButtonVisable;
+
         #endregion
 
         #region Properties
@@ -42,23 +48,29 @@ namespace GeometriaObliczeniowa.ViewModels
 
         public string ButtonText
         {
-            get { return this.buttonText; }
-            set { SetProperty(ref this.buttonText, value); }
+            get => this.buttonText;
+            set => SetProperty(ref this.buttonText, value);
         }
 
         public string Intersection
         {
-            get { return this.intersection; }
-            set { SetProperty(ref this.intersection, value); }
+            get => this.intersection;
+            set => SetProperty(ref this.intersection, value);
         }
 
         public string Coordinates
         {
-            get { return this.coordinates; }
-            set { SetProperty(ref this.coordinates, value); }
+            get => this.coordinates;
+            set => SetProperty(ref this.coordinates, value);
         }
 
         public DataGrid DataGrid { get; set; }
+
+        public Visibility IsButtonVisable
+        {
+            get => this.isButtonVisable;
+            set => SetProperty(ref this.isButtonVisable, value);
+        }
         #endregion
 
         #region Commands
@@ -71,6 +83,7 @@ namespace GeometriaObliczeniowa.ViewModels
         {
             this.eventAggregator = eventAggregator;
             this.intersectionEngine = intersectionEngine;
+            this.backgroundWorker = new BackgroundWorker();
             this.InitializeProperties();
             this.InitializeEvents();
             this.InitializeCommands();
@@ -84,6 +97,7 @@ namespace GeometriaObliczeniowa.ViewModels
 
             this.SegmentsViewModel = new SegmentsViewModel(eventAggregator, new SegmentsDTO());
             this.IsSweeperAvailable = true;
+            this.IsButtonVisable = Visibility.Hidden;
             this.ButtonText = Strings.Run;
             base.InitializingProperties = false;
         }
@@ -98,6 +112,7 @@ namespace GeometriaObliczeniowa.ViewModels
         {
             this.Intersection = Empty;
             this.Coordinates = Empty;
+            this.IsButtonVisable = this.DataGrid != null ? Visibility.Visible : Visibility.Hidden;
         }
 
         private void OnSweeperStopped(bool isRunning)
