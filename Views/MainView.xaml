@@ -15,6 +15,17 @@
             <Style x:Key="Centering" TargetType="{x:Type TextBlock}">
                 <Setter Property="HorizontalAlignment" Value="Center"></Setter>
             </Style>
+            <Style x:Key="cellErrorStyle" TargetType="{x:Type TextBox}">
+                <Style.Triggers>
+                    <Trigger Property="Validation.HasError" Value="true">
+                        <Setter Property="Background" Value="#FF5722"></Setter>
+                        <Setter Property="Foreground" Value="#FFFFFF"></Setter>
+                        <Setter Property="ToolTip"
+                                Value="{Binding RelativeSource={RelativeSource Self},
+                   Path=(Validation.Errors)[0].ErrorContent}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -61,7 +72,9 @@
                         <Binding Path="ID"/>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static views1:Strings.StartingXHeader}">
+
+                <DataGridTextColumn Header="{x:Static views1:Strings.StartingXHeader}"                                     
+                                    EditingElementStyle="{StaticResource cellErrorStyle}">
                     <DataGridTextColumn.Binding>
                         <Binding Path="StartingPointX" UpdateSourceTrigger="LostFocus" Mode="TwoWay" ValidatesOnDataErrors="True">
                             <Binding.ValidationRules>
@@ -70,8 +83,8 @@
                         </Binding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static views1:Strings.StartingYHeader}">
-
+                <DataGridTextColumn Header="{x:Static views1:Strings.StartingYHeader}"
+                                    EditingElementStyle="{StaticResource cellErrorStyle}">
                     <DataGridTextColumn.Binding>
                         <Binding Path="StartingPointY" UpdateSourceTrigger="LostFocus" Mode="TwoWay" ValidatesOnDataErrors="True">
                             <Binding.ValidationRules>
@@ -80,8 +93,8 @@
                         </Binding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static views1:Strings.EndingXHeader}">
-
+                <DataGridTextColumn Header="{x:Static views1:Strings.EndingXHeader}"
+                                    EditingElementStyle="{StaticResource cellErrorStyle}">
                     <DataGridTextColumn.Binding>
                         <Binding Path="EndingPointX" UpdateSourceTrigger="LostFocus" Mode="TwoWay" ValidatesOnDataErrors="True">
                             <Binding.ValidationRules>
@@ -90,8 +103,8 @@
                         </Binding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static views1:Strings.EndingYHeader}">
-
+                <DataGridTextColumn Header="{x:Static views1:Strings.EndingYHeader}"
+                                    EditingElementStyle="{StaticResource cellErrorStyle}">
                     <DataGridTextColumn.Binding>
                         <Binding Path="EndingPointY" UpdateSourceTrigger="LostFocus" Mode="TwoWay" ValidatesOnDataErrors="True">
                             <Binding.ValidationRules>

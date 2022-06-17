@@ -16,7 +16,7 @@ namespace GeometriaObliczeniowa.Engines
         }
 
         internal static IntersectionEngineOutput Calculate(Line lineA, Line lineB, double tolerance)
-        { 
+        {
             if (lineA == lineB)
             {
                 return new IntersectionEngineOutput(new Point(), Strings.No);
@@ -43,13 +43,6 @@ namespace GeometriaObliczeniowa.Engines
             double x3 = lineB.Left.X, y3 = lineB.Left.Y;
             double x4 = lineB.Right.X, y4 = lineB.Right.Y;
 
-            // MACIERZ
-            double matX1 = x2 - x1, matY1 = y2 - y1;
-            double matX2 = x4 - x3, matY2 = y4 - y3;
-
-            // WYZNACZNIK MACIERZY
-            double determinant = matX1 * matY2 - matX2 * matY1;
-
             // ODCINKI NACHODZĄCE NA SIEBIE NA OSIACH X,Y
             if ((x1 == x2 && x3 == x4 && x1 == x3) || (y1 == y2 && y3 == y4 && y1 == y3))
             {
@@ -68,13 +61,6 @@ namespace GeometriaObliczeniowa.Engines
                     }
                     return new IntersectionEngineOutput(new Point(x3, y3), Strings.Yes, new Line(new Point(x3, y3), new Point(x2, y2)));
                 }
-            }
-
-            // JEŚLI ODCINKI SĄ POŁOŻONE DOKŁADNIE W TYM SAMYM MIEJSCU NA OSIACH X,Y
-            // ZWRACA BRAK PRZECIĘCIA
-            if ((x1 == x2 && x3 == x4) || (y1 == y2 && y3 == y4))
-            {
-                return new IntersectionEngineOutput(new Point(), Strings.No);
             }
 
             double x, y;
@@ -122,6 +108,10 @@ namespace GeometriaObliczeniowa.Engines
                 if (!(Math.Abs(-m1 * x + y - c1) < tolerance
                     && Math.Abs(-m2 * x + y - c2) < tolerance))
                 {
+                    if (IsInsideLine(lineA, lineB.Right, tolerance))
+                    {
+                        return new IntersectionEngineOutput(new Point(x3, y3), Strings.Yes, new Line(new Point(x3, y3), new Point(x4, y4)));
+                    }
                     return new IntersectionEngineOutput(new Point(x3, y3), Strings.Yes, new Line(new Point(x3, y3), new Point(x2, y2)));
                 }
             }

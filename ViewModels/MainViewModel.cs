@@ -7,6 +7,8 @@ using GeometriaObliczeniowa.Engines.Models;
 using GeometriaObliczeniowa.Models;
 using Prism.Commands;
 using Prism.Events;
+using System.Linq;
+using System.Windows.Controls;
 using System.Windows.Input;
 using static System.String;
 
@@ -55,6 +57,8 @@ namespace GeometriaObliczeniowa.ViewModels
             get { return this.coordinates; }
             set { SetProperty(ref this.coordinates, value); }
         }
+
+        public DataGrid DataGrid { get; set; }
         #endregion
 
         #region Commands
@@ -81,7 +85,6 @@ namespace GeometriaObliczeniowa.ViewModels
             this.SegmentsViewModel = new SegmentsViewModel(eventAggregator, new SegmentsDTO());
             this.IsSweeperAvailable = true;
             this.ButtonText = Strings.Run;
-
             base.InitializingProperties = false;
         }
 
@@ -121,6 +124,11 @@ namespace GeometriaObliczeniowa.ViewModels
 
         private bool CanExecute()
         {
+            if (this.DataGrid != null)
+            {
+                return this.IsSweeperAvailable && !this.ValidationHasErrors(this.DataGrid);
+            }
+
             return this.IsSweeperAvailable;
         }
 
@@ -131,6 +139,15 @@ namespace GeometriaObliczeniowa.ViewModels
             this.IsSweeperAvailable = false;
             this.eventAggregator.GetEvent<IsSweeperRunnigEvent>().Publish(true);
             this.ButtonText = Strings.Sweeping;
+        }
+
+        private bool ValidationHasErrors(DataGrid dataGrid)
+        {
+            return dataGrid.ItemsSource.Cast<object>()
+                .Select(c => dataGrid.ItemContainerGenerator.ContainerFromItem(c))
+                .Where(c => c != null)
+                .Select(Validation.GetHasError)
+                .FirstOrDefault(c => c);
         }
         #endregion
     }

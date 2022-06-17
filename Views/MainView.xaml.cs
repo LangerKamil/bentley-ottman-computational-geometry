@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using GeometriaObliczeniowa.ViewModels;
 
 namespace GeometriaObliczeniowa.Views
 {
@@ -7,6 +8,8 @@ namespace GeometriaObliczeniowa.Views
         public MainView()
         {
             InitializeComponent();
+            var viewModel = (MainViewModel)this.DataContext;
+            viewModel.DataGrid = this.dataGrid;
         }
     }
 }
