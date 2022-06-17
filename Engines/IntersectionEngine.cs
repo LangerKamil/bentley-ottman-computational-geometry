@@ -49,7 +49,7 @@ namespace GeometriaObliczeniowa.Engines
                 // PIERWSZY PUNKT PRZECIECIA ODCINKÓW ORAZ POCZĄTEK DRUGIEGO ODCINKA
                 var firstIntersection = new Point(x3, y3);
 
-                // JEŚLI PUNKT ZNAJDUJE SIĘ MIĘDZY POCZĄTKIEM I KOŃCEM ODCIKÓW (NIESKOŃCZONOŚĆ)
+                // JEŚLI PUNKT ZNAJDUJE SIĘ MIĘDZY POCZĄTKIEM I KOŃCEM ODCIKÓW 
                 // ZWRACA WSPÓŁRZĘDNE WEWNĘTRZNEGO ODCINKA
                 if (IsInsideLine(lineA, firstIntersection, tolerance) &&
                     IsInsideLine(lineB, firstIntersection, tolerance))
@@ -108,6 +108,7 @@ namespace GeometriaObliczeniowa.Engines
                 if (!(Math.Abs(-m1 * x + y - c1) < tolerance
                     && Math.Abs(-m2 * x + y - c2) < tolerance))
                 {
+                    // CZY JEDEN ODCINEK ZNAJDUJE SIĘ WEWNĄTRZ DRUGIEGO
                     if (IsInsideLine(lineA, lineB.Right, tolerance))
                     {
                         return new IntersectionEngineOutput(new Point(x3, y3), Strings.Yes, new Line(new Point(x3, y3), new Point(x4, y4)));
@@ -118,7 +119,7 @@ namespace GeometriaObliczeniowa.Engines
 
             var result = new Point(x, y);
 
-            // JEŚLI PUNKT ZNAJDUJE SIĘ MIĘDZY POCZĄTKIEM I KOŃCEM ODCIKÓW (NIESKOŃCZONOŚĆ)
+            // JEŚLI PUNKT ZNAJDUJE SIĘ MIĘDZY POCZĄTKIEM I KOŃCEM ODCIKÓW 
             // ZWRACA JEGO WSPÓŁRZĘDNE
             if (IsInsideLine(lineA, result, tolerance) &&
                 IsInsideLine(lineB, result, tolerance))
