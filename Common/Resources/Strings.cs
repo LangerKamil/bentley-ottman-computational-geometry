@@ -6,5 +6,6 @@
         public const string Sweeping = "Zamiatanie...";
         public const string Yes = "TAK";
         public const string No = "NIE";
+        public const string Parallel = "Odcinki równoległe";
     }
 }
