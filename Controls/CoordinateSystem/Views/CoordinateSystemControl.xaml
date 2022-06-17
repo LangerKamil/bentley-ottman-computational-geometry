@@ -59,15 +59,15 @@
 
                                     <!--INTERSECTION POINT-->
                                     <Ellipse DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=1},Path=DataContext}" 
-                                             Fill="Red" Width="10" Height="10" Canvas.Left="{Binding Intersection.X, Converter={StaticResource LinePointToEllipsePositionConverter}}" 
+                                             Fill="#FF5722" Width="10" Height="10" Canvas.Left="{Binding Intersection.X, Converter={StaticResource LinePointToEllipsePositionConverter}}" 
                                              Canvas.Top="{Binding Intersection.Y, Converter={StaticResource LinePointToEllipsePositionConverter}}" Visibility="{Binding IsIntersectionPointVisable}" />
 
                                     <!--COMMON SEGMENT-->
                                     <Ellipse DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=1},Path=DataContext}" 
-                                             Fill="Red" Width="10" Height="10" Canvas.Left="{Binding CommonSegment.Left.X, Converter={StaticResource LinePointToEllipsePositionConverter}}" 
+                                             Fill="#FF5722" Width="10" Height="10" Canvas.Left="{Binding CommonSegment.Left.X, Converter={StaticResource LinePointToEllipsePositionConverter}}" 
                                              Canvas.Top="{Binding CommonSegment.Left.Y, Converter={StaticResource LinePointToEllipsePositionConverter}}" Visibility="{Binding IsCommonSegmentVisable}" />
                                     <Line DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=1},Path=DataContext}"
-                                          Stroke="Red"
+                                          Stroke="#FF5722"
                                           StrokeThickness="3"
                                           Canvas.ZIndex="3"
                                           X1="{Binding CommonSegment.Left.X}" 
@@ -76,7 +76,7 @@
                                           Y2="{Binding CommonSegment.Right.Y}"
                                           Visibility="{Binding IsCommonSegmentVisable}"/>
                                     <Ellipse DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}, AncestorLevel=1},Path=DataContext}" 
-                                             Fill="Red" Width="10" Height="10" Canvas.Left="{Binding CommonSegment.Right.X, Converter={StaticResource LinePointToEllipsePositionConverter}}" 
+                                             Fill="#FF5722" Width="10" Height="10" Canvas.Left="{Binding CommonSegment.Right.X, Converter={StaticResource LinePointToEllipsePositionConverter}}" 
                                              Canvas.Top="{Binding CommonSegment.Right.Y, Converter={StaticResource LinePointToEllipsePositionConverter}}" Visibility="{Binding IsCommonSegmentVisable}" />
                                 </Canvas>
                             </DataTemplate>
@@ -116,7 +116,7 @@
 
         <!--Sweeper-->
         <Rectangle Width="400"
-              Stroke="Red" 
+              Stroke="#FF5722" 
               StrokeThickness="3" 
               VerticalAlignment="top" 
               Canvas.ZIndex="-1"
