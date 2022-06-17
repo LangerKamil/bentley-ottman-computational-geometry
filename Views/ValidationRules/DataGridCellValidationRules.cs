@@ -10,10 +10,10 @@ namespace GeometriaObliczeniowa.Views.ValidationRules
         {
             double proposedValue;
             string input = value.ToString();
-            if (input == string.Empty) return new ValidationResult(false, "Entry is required.");
-            if (!double.TryParse(input, out proposedValue)) return new ValidationResult(false, "Response is invalid.");
-            if (proposedValue > 170.00) return new ValidationResult(false, "Value cannot be greater than 170.");
-            if (proposedValue < -170.00) return new ValidationResult(false, "Value must be greater or equal -170.");
+            if (input == string.Empty) return new ValidationResult(false, "Pole nie może być puste.");
+            if (!double.TryParse(input, out proposedValue)) return new ValidationResult(false, "Dozwolone tylko liczby całkowite.");
+            if (proposedValue > 170.00) return new ValidationResult(false, "Wartość nie może być większa niż 170.");
+            if (proposedValue < -170.00) return new ValidationResult(false, "Wartość nie może być mniejsza niż -170.");
             return new ValidationResult(true, null);
         }
     }
